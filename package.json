@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server"
+    "back":"nodemon server",
+    "front":"cd client && npm start",
+    "dev": "concurrently \"npm run front\" \"npm run back\""
   },
   "keywords": [
     "auth",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "concurrently":"^6.0.2"
   }
 }

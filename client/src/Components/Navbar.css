@@ -1,0 +1,11 @@
+.navigation {
+  background-color: #ffffff;
+  color: #000;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: #52ab98;
+}

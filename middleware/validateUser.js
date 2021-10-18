@@ -7,9 +7,18 @@ const { validationResult, check } = require("express-validator");
 //   check("email", "email is required and should be valid").isEmail().notEmpty(),
 // ];
 exports.registerValidate = () => [
-  check("name", "name is required").notEmpty(),
+  check("first_name", "first name is required").notEmpty(),
+  check("last_name", "last name is required").notEmpty(),
   check("email", "should be email").isEmail(),
   check("password", "password is required").notEmpty(),
+  check("password2", "rentering password is required").notEmpty(),
+  check("password2", "passwords don't match").custom((value, { req }) => {
+    if (value === req.body.password) {
+      return true;
+    } else {
+      return false;
+    }
+  }),
   check("password", "enter a valid password").isLength({ min: 6 }),
 ];
 exports.loginValidate = () => [
