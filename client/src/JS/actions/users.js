@@ -6,15 +6,15 @@ import {
   LOGIN_USER,
   CURRENT_USER,
   LOGOUT_USER,
+  GET_ALL_USERS,
 } from "../constants/action-types";
 
 export const register = (user, history) => async (dispatch) => {
   dispatch({ type: LOAD_USER });
   try {
-    let result = await axios.post("/api/user/register", user);
-    console.log(result);
+    let { data } = await axios.post("/api/user/register", user);
     //success action
-    dispatch({ type: REGISTER_USER, payload: result.data }); //{user,token,msg}
+    dispatch({ type: REGISTER_USER, payload: data }); //{user,token,msg}
     history.push("/profile");
   } catch (error) {
     // fail
@@ -26,9 +26,13 @@ export const login = (user, history) => async (dispatch) => {
   dispatch({ type: LOAD_USER });
 
   try {
-    let result = await axios.post("/api/user/login", user);
-    dispatch({ type: LOGIN_USER, payload: result.data }); //{msg,token,user}
-    history.push("./profile");
+    let { data } = await axios.post("/api/user/login", user);
+    dispatch({ type: LOGIN_USER, payload: data }); //{msg,token,user}
+    if (data.user.role === "admin") {
+      history.push("/admin");
+    } else {
+      history.push("/profile");
+    }
   } catch (error) {
     dispatch({ type: FAIL_USER, payload: error.response.data.errors });
   }
@@ -56,8 +60,21 @@ export const logout = () => {
   };
 };
 
+//clear erros list
 export const emptyErrors = () => {
   return {
     type: "EMPTY_ERRORS",
   };
+};
+
+//get all users for admin only
+export const getAllUsers = () => async (dispatch) => {
+  dispatch({ type: LOAD_USER });
+  try {
+    let result = await axios.get("/api/admin");
+
+    dispatch({ type: GET_ALL_USERS, payload: result.data });
+  } catch (error) {
+    dispatch({ type: FAIL_USER, payload: error.response.data });
+  }
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { login } from "../../JS/actions/users";
 import "./Login.css";
 
@@ -22,7 +23,14 @@ const Login = ({ history }) => {
 
   return (
     <div>
-      <h2>Create an account</h2>
+      <h2>Login</h2>
+      <p>you don't have an account?</p>
+      <p>
+        <Link to="/register">
+          <span style={{ textDecorationStyle: "solid" }}>sign up for free</span>
+        </Link>
+      </p>
+
       <form className="login-form">
         <input
           label="email"

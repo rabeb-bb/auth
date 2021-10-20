@@ -29,7 +29,7 @@ exports.Register = async (req, res) => {
         id: newUser._id,
       },
       process.env.SECRET_KEY,
-      { expiresIn: "24h" }
+      { expiresIn: "2h" }
     );
     res
       .status(200)

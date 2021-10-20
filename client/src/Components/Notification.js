@@ -16,9 +16,20 @@ const Notification = ({ error }) => {
   return (
     // {show? null : (
     <div>
-      {" "}
+      {/* {" "}
       {toast.error(error.msg)}
-      <ToastContainer />
+      <ToastContainer /> */}
+      {/* {show && {toas.error(error.msg)}} */}
+      {show &&
+        toast.error(error.msg, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })}
     </div>
     // )}
   );

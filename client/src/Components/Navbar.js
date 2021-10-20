@@ -204,7 +204,7 @@ export default function Navbar() {
               <MenuIcon />
             </IconButton>
             <Typography
-              variant="h4"
+              variant="h6"
               noWrap
               component="div"
               sx={{ display: { xs: "none", sm: "block" } }}
@@ -226,7 +226,7 @@ export default function Navbar() {
               component="div"
               sx={{ display: { xs: "none", sm: "block" } }}
             >
-              <Link to="/Browse-books">Browse Books</Link>
+              <Link to="/Browse-books">Browse Books </Link>
             </Typography>
             <Typography
               variant="h6"
@@ -234,7 +234,7 @@ export default function Navbar() {
               component="div"
               sx={{ display: { xs: "none", sm: "block" } }}
             >
-              <Link to="/Profile">My Books</Link>
+              <Link to="/Profile"> My Books</Link>
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: "none", md: "flex" } }}>

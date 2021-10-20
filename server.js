@@ -1,3 +1,4 @@
+console.clear();
 const express = require("express");
 const connectDB = require("./config/connectDB");
 require("dotenv").config();
@@ -10,6 +11,7 @@ connectDB();
 //router
 app.use(express.json());
 app.use("/api/user", require("./router/user"));
+app.use("/api/admin", require("./router/admin"));
 // ***********
 PORT = process.env.PORT;
 // ***********

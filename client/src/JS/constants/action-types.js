@@ -11,3 +11,6 @@ export const CURRENT_USER = "CURRENT_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
 //clear errors
 export const EMPTY_ERRORS = "EMPTY_ERRORS";
+
+//get all users
+export const GET_ALL_USERS = "GET_ALL_USERS";

@@ -9,16 +9,30 @@
   align-items: center;
   justify-content: space-around;
 }
-.register-form input {
+.register-form .text-input {
   width: 60%;
   margin: 1%;
   padding: 1%;
   font-size: 1.5em;
   border-radius: 5px;
 }
+.register-form select {
+  width: 40%;
+  padding: 1%;
+  font-size: 1em;
+  border-radius: 5px;
+}
+.register-form label {
+  vertical-align: top;
+  font-size: 1em;
+}
 .submit-btn {
-  width: 10%;
+  margin: 1%;
+  padding: 1%;
+  width: 40%;
   border: none;
   background-color: #2b6777;
   color: #f2f2f2;
+  font-size: 1em;
+  border-radius: 5px;
 }

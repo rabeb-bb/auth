@@ -11,14 +11,15 @@ exports.registerValidate = () => [
   check("last_name", "last name is required").notEmpty(),
   check("email", "should be email").isEmail(),
   check("password", "password is required").notEmpty(),
-  check("password2", "rentering password is required").notEmpty(),
-  check("password2", "passwords don't match").custom((value, { req }) => {
-    if (value === req.body.password) {
-      return true;
-    } else {
-      return false;
-    }
-  }),
+  // check("password2", "rentering password is required").notEmpty(),
+  // check("password2", "passwords don't match").custom((value, { req }) => {
+  //   if (value === req.body.password) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }),
+  check("role", "you need to choose to be a reader or an author").notEmpty(),
   check("password", "enter a valid password").isLength({ min: 6 }),
 ];
 exports.loginValidate = () => [

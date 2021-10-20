@@ -8,10 +8,12 @@ const {
   CURRENT_USER,
   LOGOUT_USER,
   EMPTY_ERRORS,
+  GET_ALL_USERS,
 } = require("../constants/action-types");
 
 // initialstate
 const initialState = {
+  users: [],
   user: {},
   errors: [],
   isAuth: false,
@@ -35,6 +37,8 @@ const userReducer = (state = initialState, { type, payload }) => {
       return { ...state, errors: payload, load: false };
     case CURRENT_USER:
       return { ...state, user: payload.user, isAuth: true, load: false };
+    case GET_ALL_USERS:
+      return { ...state, users: payload.users, isAuth: true, load: false };
     case LOGOUT_USER:
       localStorage.removeItem("token");
       return { ...state, user: {}, isAuth: false };

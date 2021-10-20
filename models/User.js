@@ -11,12 +11,19 @@ const userSchema = new Schema({
     required: true,
   },
   password: { type: String, required: true },
-  password2: { type: String, required: true },
   email: {
     type: String,
     required: true,
   },
   date_of_birth: Date,
+  role: {
+    type: {
+      type: String,
+      // enum: ["admin", "reader", "author"],
+    },
+
+    // default: "reader",
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

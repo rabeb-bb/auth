@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { current } from "./JS/actions/users";
 import { useEffect } from "react";
 import Account from "./Pages/MyAccount/Account";
+import Admin from "./Pages/admin/Admin";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
         <Route path="/Browse-books" component={Books} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/account" component={Account} />
+        <PrivateRoute path="/admin" component={Admin} />
         <Route path="/*" component={Error} />
       </Switch>
     </div>
