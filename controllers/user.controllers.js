@@ -64,8 +64,54 @@ exports.Login = async (req, res) => {
     );
 
     res.status(200).send({ msg: "login successfully", user: findUser, token });
-  } catch {
-    console.log(error);
+  } catch (error) {
     res.status(500).send({ errors: [{ msg: "could not login" }] });
+  }
+};
+
+//get all users
+exports.getUsers = async (req, res) => {
+  try {
+    const getAllUsers = await User.find();
+    res.status(200).send({ msg: "found all users", users: getAllUsers });
+  } catch (error) {
+    res.status(400).send({ errors: [{ msg: "could not find all users" }] });
+  }
+};
+//get user by id
+exports.getUser = async (req, res) => {
+  try {
+    const getUser = await User.findById(req.params._id);
+    res
+      .status(200)
+      .send({ msg: "found the user you are looking for", user: getUser });
+  } catch {
+    res.status(400).send({ errors: [{ msg: "could not find user" }] });
+  }
+};
+//get user by id
+exports.deleteUser = async (req, res) => {
+  console.log(req.params);
+  try {
+    const deletedUser = await User.deleteOne({ _id: req.params._id });
+    console.log(req.params);
+    res.status(200).send({ msg: "user is deleted", user: deletedUser });
+  } catch (error) {
+    console.log(req.params);
+    res.status(400).send({ errors: [{ msg: "could not delete user" }] });
+  }
+};
+//get user by id
+exports.changeRole = async (req, res) => {
+  try {
+    const updateUser = await User.updateOne(
+      { _id: req.params._id },
+      {
+        $set: { ...req.body },
+      }
+    );
+    res.status(200).send({ msg: "user is deleted", user: updateUser });
+  } catch (error) {
+    res.status(400).send({ errors: [{ msg: "could not delete user" }] });
   }
 };

@@ -5,16 +5,23 @@ const {
   LOGIN_USER,
   FAIL_USER,
   LOAD_USER,
+  LOGIN_ADMIN,
   CURRENT_USER,
   LOGOUT_USER,
   EMPTY_ERRORS,
   GET_ALL_USERS,
+  GET_USER,
+  DELETE_USER,
+  EDIT_USER,
+  CURRENT_ADMIN,
 } = require("../constants/action-types");
 
 // initialstate
 const initialState = {
   users: [],
   user: {},
+  client: {},
+  admin: false,
   errors: [],
   isAuth: false,
   load: false,
@@ -37,12 +44,31 @@ const userReducer = (state = initialState, { type, payload }) => {
       return { ...state, errors: payload, load: false };
     case CURRENT_USER:
       return { ...state, user: payload.user, isAuth: true, load: false };
+    case CURRENT_ADMIN:
+      return {
+        ...state,
+        user: payload.user,
+        isAuth: true,
+        load: false,
+        admin: true,
+      };
     case GET_ALL_USERS:
       return { ...state, users: payload.users, isAuth: true, load: false };
+    case GET_USER:
+      localStorage.setItem("user", payload.user);
+      return { ...state, client: payload.user, isAuth: true, load: false };
+
+    case DELETE_USER:
+      return {
+        ...state,
+        users: state.users.filter((el) => el.id !== payload.user._id),
+      };
+    case EDIT_USER:
+      return { ...state, client: payload.user, load: false };
     case LOGOUT_USER:
       localStorage.removeItem("token");
-      return { ...state, user: {}, isAuth: false };
-    case "EMPTY_ERRORS":
+      return { ...state, user: {}, isAuth: false, admin: false };
+    case EMPTY_ERRORS:
       return { ...state, errors: [] };
     default:
       return state;

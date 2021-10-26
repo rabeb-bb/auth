@@ -17,13 +17,16 @@ const userSchema = new Schema({
   },
   date_of_birth: Date,
   role: {
-    type: {
-      type: String,
-      // enum: ["admin", "reader", "author"],
-    },
-
-    // default: "reader",
+    type: String,
+    enum: ["admin", "reader", "author"],
+    required: true,
+    default: "reader",
   },
+  profile_picture: String,
+  about_me: String,
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+  books: [{ type: Schema.Types.ObjectId, ref: "Book" }],
+  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 });
 
 module.exports = mongoose.model("User", userSchema);

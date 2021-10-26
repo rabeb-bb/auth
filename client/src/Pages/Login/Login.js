@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { login } from "../../JS/actions/users";
+import Notification from "../../Components/Notification";
+import { login, loginAdmin } from "../../JS/actions/users";
 import "./Login.css";
 
 const Login = ({ history }) => {
   const [show, setShow] = useState(false);
   const [user, setUser] = useState({});
+  const errors = useSelector((state) => state.userReducer.errors);
   const dispatch = useDispatch();
   const handleLogin = (e) => {
     dispatch(login(user, history));
+
     e.preventDefault();
   };
   const handleUser = (e) => {
@@ -23,6 +26,7 @@ const Login = ({ history }) => {
 
   return (
     <div>
+      {errors && errors.map((el) => <Notification error={el} />)}
       <h2>Login</h2>
       <p>you don't have an account?</p>
       <p>

@@ -12,6 +12,8 @@ connectDB();
 app.use(express.json());
 app.use("/api/user", require("./router/user"));
 app.use("/api/admin", require("./router/admin"));
+app.use("/api/book", require("./router/book"));
+app.use("/api/review", require("./router/review"));
 // ***********
 PORT = process.env.PORT;
 // ***********

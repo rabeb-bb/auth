@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "back":"nodemon server",
-    "front":"cd client && npm start",
+    "back": "nodemon server",
+    "front": "cd client && npm start",
     "dev": "concurrently \"npm run front\" \"npm run back\""
   },
   "keywords": [
@@ -19,13 +19,13 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
-    "express-validator": "^6.12.2",
+    "express-validator": "^6.13.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.9"
+    "mongoose": "^6.0.12"
   },
   "devDependencies": {
+    "concurrently": "^6.0.2",
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.13",
-    "concurrently":"^6.0.2"
+    "nodemon": "^2.0.14"
   }
 }
