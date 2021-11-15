@@ -14,7 +14,7 @@ exports.postReview = async (req, res) => {
       .send({ msg: "Review successfully posted", review: newReview });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ errors: [{ msg: "could not post review" }] });
+    res.status(400).send({ errors: [{ msg: "could not post review" }] });
   }
 };
 //update a review
@@ -31,7 +31,7 @@ exports.reviewUpdate = async (req, res) => {
       .send({ msg: "review successfully updated", review: findReview });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ errors: [{ msg: "could not update review" }] });
+    res.status(400).send({ errors: [{ msg: "could not update review" }] });
   }
 };
 //delete a book
@@ -45,7 +45,7 @@ exports.reviewDelete = async (req, res) => {
       .send({ msg: "review successfully deleted", review: deleteReview });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ errors: [{ msg: "could not delete review" }] });
+    res.status(400).send({ errors: [{ msg: "could not delete review" }] });
   }
 };
 
@@ -54,7 +54,7 @@ exports.getReviewById = async (req, res) => {
   try {
     // const { _id } = req.body;
     //check if email exists in the db or not
-    const findReview = await Review.findById(req.params._id);
+    const findReview = await Review.findById(req.params._id).populate(user_id);
 
     // if (!findReview) {
     //   return res.status(404).send({ errors: [{ msg: "Review does not exist" }] });
@@ -63,42 +63,38 @@ exports.getReviewById = async (req, res) => {
     res.status(200).send({ msg: "Review is found", review: findReview });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ errors: [{ msg: "could not find book" }] });
+    res.status(400).send({ errors: [{ msg: "could not find book" }] });
   }
 };
 //get the reviews of a certain book
 exports.getReviews = async (req, res) => {
   try {
-    const findReviews = await Review.find({ book_id: req.params.book_id });
+    const findReviews = await Review.find({
+      book_id: req.params.book_id,
+    }).populate("user_id");
 
     res
       .status(200)
       .send({ msg: " book reviews are found", reviews: findReviews });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ errors: [{ msg: "could not find book reviews" }] });
+    res.status(400).send({ errors: [{ msg: "could not find book reviews" }] });
   }
 };
 //get the reviews of a certain user
 exports.getUserReviews = async (req, res) => {
   try {
-    const findReviews = await Review.find({ user_id: req.params.user_id });
+    const findReviews = await Review.find({
+      user_id: req.params.user_id,
+    }).populate("book_id");
 
     res
       .status(200)
       .send({ msg: " user reviews are found", reviews: findReviews });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ errors: [{ msg: "could not find user reviews" }] });
+    res.status(400).send({ errors: [{ msg: "could not find user reviews" }] });
   }
 };
 
-//get all books
-exports.getBooks = async (req, res) => {
-  try {
-    const getAllBooks = await Book.find();
-    res.status(200).send({ msg: "found all books", books: getAllBooks });
-  } catch (error) {
-    res.status(500).send({ errors: [{ msg: "could not find all books" }] });
-  }
-};
+

@@ -1,0 +1,27 @@
+#home_into {
+  padding: 3%;
+  /* background-image: url("https://www.sjpl.org/sites/default/files/images-legacy/book_with_yellow_background_smaller.jpg");
+  background-repeat: no-repeat;*/
+  /* background-size: 300%; */
+  background: url("https://www.leadershipbuffalo.org/content/images//blog/Education_hero-image-template_tablet-768x450px.gif")
+    no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: 40%;
+  -o-background-size: cover;
+  /* background-size: 93.64%; */
+}
+#home_into .intro {
+  margin: 6%;
+  padding: 1%;
+  width: 40%;
+}
+#home_into .intro p {
+  margin: 2%;
+  font-size: 1.5vw;
+}
+#home_into .intro h2 {
+  font-size: 3vw;
+}
+#home_into .intro h3 {
+  font-size: 1.5vw;
+}

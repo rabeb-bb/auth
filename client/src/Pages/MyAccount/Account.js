@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import Accountsetting from "../../Components/account/Accountsetting";
 
 const Account = () => {
   const user = useSelector((state) => state.userReducer.user);
@@ -8,8 +9,7 @@ const Account = () => {
     <div>
       {loadUser ? (
         <div>
-          <h2>Account</h2>
-          <h4>{user.first_name}</h4>
+          <Accountsetting />
         </div>
       ) : (
         <h3>loading</h3>

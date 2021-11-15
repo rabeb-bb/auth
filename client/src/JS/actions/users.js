@@ -10,8 +10,10 @@ import {
   DELETE_USER,
   GET_USER,
   EDIT_USER,
-  LOGIN_ADMIN,
+  EDIT_USER_ACCOUNT,
+  // LOGIN_ADMIN,
   CURRENT_ADMIN,
+  GET_AUTHOR,
 } from "../constants/action-types";
 
 export const register = (user, history) => async (dispatch) => {
@@ -86,9 +88,10 @@ export const getAllUsers = () => async (dispatch) => {
   };
   try {
     let result = await axios.get("/api/admin", config);
-    console.log(result);
+    // console.log(result);
     dispatch({ type: GET_ALL_USERS, payload: result.data });
   } catch (error) {
+    console.log(error);
     dispatch({ type: FAIL_USER, payload: error.response.data });
   }
 };
@@ -130,17 +133,49 @@ export const deleteUser =
     }
   };
 //Edit user
-export const editUser = (id, user) => async (dispatch) => {
+export const editUser = (user) => async (dispatch) => {
   const config = {
     headers: {
       authorization: localStorage.getItem("token"),
     },
   };
   try {
-    let result = await axios.put(`/api/admin/update/${id}`, user);
-    console.log(result);
+    let result = await axios.put(`/api/admin/update/${user._id}`, user, config);
+    // console.log(result);
     dispatch({ type: EDIT_USER, payload: result.data });
+    dispatch(getAllUsers())
   } catch (error) {
+    dispatch({ type: FAIL_USER, payload: error.response.data });
+  }
+};
+
+//get author
+export const getAuthor = (author_id) => async (dispatch) => {
+  try {
+    let result = await axios.get(`/api/user/author/${author_id}`);
+    dispatch({ type: GET_AUTHOR, payload: result.data });
+  } catch (error) {
+    dispatch({ type: FAIL_USER, payload: error.response.data });
+  }
+};
+
+//edit your info
+export const editAccount = (data, history) => async (dispatch) => {
+  const config = {
+    headers: {
+      authorization: localStorage.getItem("token"),
+      "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
+    },
+  };
+  const user_id = localStorage.getItem("userID");
+  try {
+    let result = await axios.put(`/api/user/edit/${user_id}`, data, config);
+    // console.log(result);
+
+    dispatch({ type: EDIT_USER_ACCOUNT, payload: result.data });
+    // history.go("/profile");
+  } catch (error) {
+    console.log(error);
     dispatch({ type: FAIL_USER, payload: error.response.data });
   }
 };

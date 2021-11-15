@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Notification from "../../Components/Notification";
-import { login, loginAdmin } from "../../JS/actions/users";
+import { emptyErrors, login } from "../../JS/actions/users";
 import "./Login.css";
 
 const Login = ({ history }) => {
@@ -18,15 +18,13 @@ const Login = ({ history }) => {
   const handleUser = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-  useEffect(() => {
-    return () => {
-      //   dispatch(videErrors());
-    };
-  }, []);
+  // useEffect(() => {
+  //   dispatch(emptyErrors());
+  // }, [errors, dispatch]);
 
   return (
     <div>
-      {errors && errors.map((el) => <Notification error={el} />)}
+      {errors && errors.map((el, i) => <Notification error={el} key={i} />)}
       <h2>Login</h2>
       <p>you don't have an account?</p>
       <p>

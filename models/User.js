@@ -22,11 +22,23 @@ const userSchema = new Schema({
     required: true,
     default: "reader",
   },
+  status: {
+    type: String,
+    enum: ["active", "blocked"],
+    required: true,
+    default: "active",
+  },
   profile_picture: String,
   about_me: String,
+  cloudinary_id: String,
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
   books: [{ type: Schema.Types.ObjectId, ref: "Book" }],
+  shelf: [{ type: Schema.Types.ObjectId, ref: "Book" }],
   posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+  memberSince: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

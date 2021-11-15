@@ -2,6 +2,7 @@ import "./App.css";
 import Navbar from "./Components/Navbar";
 import { Switch, Route } from "react-router";
 import Home from "./Pages/Home";
+import UserList from "./Pages/UserList";
 import Register from "./Pages/Register";
 import Error from "./Pages/Error";
 import Books from "./Pages/Books";
@@ -18,6 +19,11 @@ import Users from "./Components/Users";
 import Sidebar from "./Components/Sidebar";
 import User from "./Pages/User/User";
 import NotAuth from "./Pages/NotAuth";
+import Support from "./Pages/Support";
+import Footer from "./Components/footer/Footer";
+import Book from "./Pages/Book";
+import BookForm from "./Pages/UploadBook/BookForm";
+import Author from "./Pages/Author/Author";
 
 function App() {
   const user = useSelector((state) => state.userReducer.user);
@@ -39,10 +45,14 @@ function App() {
           <Route path="/Register" component={Register} />
           <Route path="/Login" component={Login} />
           <Route path="/Browse-books" component={Books} />
+          <Route path="/Book/:_id" component={Book} />
+          <Route path="/author" component={Author} />
           <PrivateRoute path="/profile" component={Profile} />
           <PrivateRoute path="/account" component={Account} />
+          <PrivateRoute path="/upload" component={BookForm} />
           <AdminRoute exact path="/admin" component={Admin} />
-          <AdminRoute path="/admin/users" component={Users} />
+          <AdminRoute path="/admin/tickets" component={Support} />
+          <AdminRoute path="/admin/users" component={UserList} />
           <AdminRoute path="/admin/user/:_id" component={User} />
           <Route path="/auth" component={NotAuth} />
 

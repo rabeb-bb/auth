@@ -13,9 +13,9 @@ router.get("/", adminAuth, getUsers);
 //get user by id
 router.get("/:_id", adminAuth, getUser);
 //delete user by id
-router.get("/delete/:_id", deleteUser);
+router.delete("/delete/:_id", deleteUser);
 //change user role
-router.get("/update/:_id", adminAuth, changeRole);
+router.put("/update/:_id", adminAuth, changeRole);
 
 //export
 module.exports = router;

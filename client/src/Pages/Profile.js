@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import PHeader from "../Components/Profile/PHeader";
 
 const Profile = () => {
   const user = useSelector((state) => state.userReducer.user);
@@ -8,8 +9,7 @@ const Profile = () => {
     <div>
       {loadUser ? (
         <div>
-          <h2>profile</h2>
-          <h4>{user.first_name}</h4>
+          <PHeader user={user} />
         </div>
       ) : (
         <h3>loading</h3>

@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { cloudinary } = require("../config/cloudinary");
 
 //create user account
 exports.Register = async (req, res) => {
@@ -28,18 +29,76 @@ exports.Register = async (req, res) => {
       {
         id: newUser._id,
       },
-      process.env.SECRET_KEY,
-      { expiresIn: "2h" }
+      process.env.SECRET_KEY
     );
     res
       .status(200)
       .send({ msg: "registered successfully", user: newUser, token });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ errors: [{ msg: "could not register" }] });
+    res.status(400).send({ errors: [{ msg: "could not register" }] });
   }
 };
 
+//create user account
+exports.EditInfo = async (req, res) => {
+  console.log(req.user);
+  try {
+    // let { password } = req.body;
+    let user = await User.findById(req.user._id);
+
+    // Delete previous image from cloudinary
+    if (user.cloudinary_id) {
+      await cloudinary.uploader.destroy(user.cloudinary_id);
+    }
+    //compare encrypted password
+    // encryprt password
+
+    // const comparePass = await bcrypt.compare(password, user.password);
+
+    // if (comparePass && password) {
+    //   const saltRounds = 10;
+    //   const hashPassword = await bcrypt.hashSync(password, saltRounds);
+    //   password = hashPassword;
+    // }
+
+    // upload image to cloudinary,
+    let result;
+    if (req.file) {
+      result = await cloudinary.uploader.upload(req.file.path);
+    }
+
+    // console.log(result);
+    //update user
+    if (result) {
+      const updatedUser = await User.updateOne(
+        { _id: req.user._id },
+        {
+          $set: {
+            ...req.body,
+            profile_picture: result.secure_url,
+            cloudinary_id: result.public_id,
+            // password: password,
+          },
+        }
+      );
+      res.status(200).send({ msg: "updated successfully", user: updatedUser });
+    } else {
+      const updatedUser = await User.updateOne(
+        { _id: req.params._id },
+        {
+          $set: { ...req.body },
+        }
+      );
+      res.status(200).send({ msg: "updated successfully", user: updatedUser });
+    }
+  } catch (error) {
+    console.log(error);
+    res
+      .status(400)
+      .send({ errors: [{ msg: "could not update account info" }] });
+  }
+};
 //log into an already existing user account
 exports.Login = async (req, res) => {
   try {
@@ -52,36 +111,40 @@ exports.Login = async (req, res) => {
     //compare encrypted password
     const comparePass = await bcrypt.compare(password, findUser.password);
     if (!comparePass) {
-      return res.status(400).send({ errors: [{ msg: "bad credential" }] });
+      return res.status(401).send({ errors: [{ msg: "bad credential" }] });
     }
     //implemant token
     const token = jwt.sign(
       {
         id: findUser._id,
       },
-      process.env.SECRET_KEY,
-      { expiresIn: "24h" }
+      process.env.SECRET_KEY
     );
 
     res.status(200).send({ msg: "login successfully", user: findUser, token });
   } catch (error) {
-    res.status(500).send({ errors: [{ msg: "could not login" }] });
+    res.status(400).send({ errors: [{ msg: "could not login" }] });
   }
 };
 
 //get all users
 exports.getUsers = async (req, res) => {
   try {
-    const getAllUsers = await User.find();
+    const getAllUsers = await User.find().populate("books");
+
     res.status(200).send({ msg: "found all users", users: getAllUsers });
   } catch (error) {
+    console.log(error);
     res.status(400).send({ errors: [{ msg: "could not find all users" }] });
   }
 };
 //get user by id
 exports.getUser = async (req, res) => {
   try {
-    const getUser = await User.findById(req.params._id);
+    const getUser = await User.findById(req.params._id)
+      .populate("books")
+      .populate("reviews")
+      .populate("posts");
     res
       .status(200)
       .send({ msg: "found the user you are looking for", user: getUser });
@@ -110,8 +173,32 @@ exports.changeRole = async (req, res) => {
         $set: { ...req.body },
       }
     );
-    res.status(200).send({ msg: "user is deleted", user: updateUser });
+    res.status(200).send({ msg: "role is changed", user: updateUser });
+    // console.log(updateUser)
   } catch (error) {
-    res.status(400).send({ errors: [{ msg: "could not delete user" }] });
+    console.log(error)
+    res.status(400).send({ errors: [{ msg: "could not change userRole" }] });
+  }
+};
+
+//get author of a certain book
+exports.getAuthor = async (req, res) => {
+  try {
+    // const { _id } = req.body;
+    //check if email exists in the db or not
+    const findUser = await User.findById(req.params.author_id)
+      .populate("books")
+      .populate("reviews")
+      .exec();
+    // .populate("posts");
+
+    // if (!findBook) {
+    //   return res.status(404).send({ errors: [{ msg: "book does not exist" }] });
+    // }
+    // console.log(findUser);
+    res.status(200).send({ msg: "author is found", user: findUser });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ errors: [{ msg: "could not find author" }] });
   }
 };

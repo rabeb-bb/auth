@@ -40,7 +40,7 @@ const UserCard = ({ user }) => {
           <button type="button" className="btn" onClick={() => handleDelete()}>
             <DeleteIcon />
           </button>
-          <Link to={`/admin/user/${user._id}`}>
+          <Link to={`/admin/user/${user._id}`} onClick={dispatch(getUser(user._id))}>
             <button
               type="button"
               className="edit-btn"

@@ -8,13 +8,12 @@ const User = () => {
   const [user, setUser] = useState({});
   //   const errors = useSelector((state) => state.userReducer.errors);
   const client = useSelector((state) => state.userReducer.client);
-
+const {_id}= useParams()
   const dispatch = useDispatch();
   setUser(client);
   useEffect(() => {
-    setUser(localStorage.getItem("user"));
-    dispatch(getUser(user._id));
-  }, []);
+    dispatch(getUser(_id));
+  }, [dispatch]);
   const handleUser = (e) => {
     setUser({ ...client, [e.target.name]: e.target.value });
   };

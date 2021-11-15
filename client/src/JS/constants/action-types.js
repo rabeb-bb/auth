@@ -9,6 +9,7 @@ export const FAIL_USER = "FAIL_USER";
 //token, privateroute
 export const CURRENT_USER = "CURRENT_USER";
 export const CURRENT_ADMIN = "CURRENT_ADMIN";
+export const EDIT_USER_ACCOUNT = "EDIT_USER_ACCOUNT";
 //logout
 export const LOGOUT_USER = "LOGOUT_USER";
 //clear errors
@@ -18,6 +19,8 @@ export const EMPTY_ERRORS = "EMPTY_ERRORS";
 export const GET_ALL_USERS = "GET_ALL_USERS";
 //get user
 export const GET_USER = "GET_USER";
+//get user
+export const GET_AUTHOR = "GET_AUTHOR";
 //delete user
 export const DELETE_USER = "DELETE_USER";
 //edit user

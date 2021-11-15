@@ -155,15 +155,16 @@ export default function Navbar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+        {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Messages</p> */}
+        <Link to="/Browse-books">Browse Books </Link>
       </MenuItem>
       <MenuItem>
-        <IconButton
+        {/* <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
@@ -172,7 +173,8 @@ export default function Navbar() {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>Notifications</p> */}
+        <Link to="/Profile"> My Books</Link>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -194,24 +196,27 @@ export default function Navbar() {
       <ThemeProvider theme={theme}>
         <AppBar position="static" color="secondary">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              <Link to="/">EverythingBooks</Link>
-            </Typography>
-            <Search>
+            <div style={{ display: "flex" }}>
+              <Link to="/">
+                <img
+                  src="https://icon-library.com/images/book-icon-png/book-icon-png-25.jpg"
+                  alt="logo"
+                  style={{
+                    display: { xs: "block" },
+                    width: "30px",
+                  }}
+                />
+              </Link>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                <Link to="/">EverythingBooks</Link>
+              </Typography>
+            </div>
+            <Search sx={{ display: { xs: "none", sm: "block" }, margin: "1%" }}>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -221,24 +226,24 @@ export default function Navbar() {
               />
             </Search>
             <Typography
-              variant="h6"
+              // variant="h6"
               noWrap
               component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
+              sx={{ display: { xs: "none", sm: "block" }, margin: "0 1%" }}
             >
               <Link to="/Browse-books">Browse Books </Link>
             </Typography>
             <Typography
-              variant="h6"
+              // variant="h6"
               noWrap
               component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}
+              sx={{ display: { xs: "none", sm: "block" }, margin: "0 1%" }}
             >
               <Link to="/Profile"> My Books</Link>
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <IconButton
+              {/* <IconButton
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
@@ -255,7 +260,7 @@ export default function Navbar() {
                 <Badge badgeContent={17} color="error">
                   <NotificationsIcon />
                 </Badge>
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 size="large"
                 edge="end"

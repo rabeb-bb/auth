@@ -1,0 +1,49 @@
+.book {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin: 3%;
+  font-family: "Montserrat", helvetica, arial, sans-serif;
+  font-size: 1.2vw;
+  font-weight: 400;
+  /* background-color: #f2f2f2; */
+  text-align: left;
+}
+
+.ratings i {
+  font-size: 16px;
+  color: red;
+}
+
+.strike-text {
+  color: red;
+  text-decoration: line-through;
+}
+
+/* .product-image {
+  width: 100%;
+} */
+
+.dot {
+  height: 7px;
+  width: 7px;
+  margin-left: 6px;
+  margin-right: 6px;
+  margin-top: 3px;
+  background-color: blue;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.spec-1 {
+  color: #938787;
+  font-size: 15px;
+}
+
+h5 {
+  font-weight: 400;
+}
+
+.para {
+  font-size: 16px;
+}
