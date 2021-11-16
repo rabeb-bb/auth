@@ -1,18 +1,19 @@
 {
   "name": "auth",
   "version": "1.0.0",
-  "description": "authentification",
+  "description": "books website",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon server",
     "client": "cd client && npm start",
-    "dev": "concurrently \"npm run client\" \"npm run server\""
+    "dev": "concurrently \"npm run client\" \"npm run server\"",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "keywords": [
-    "auth",
-    "roles",
-    "routes"
+    "books",
+    "reviews",
+    "authors"
   ],
   "author": "rabeb",
   "license": "ISC",
@@ -30,5 +31,7 @@
     "concurrently": "^6.0.2",
     "dotenv": "^10.0.0",
     "nodemon": "^2.0.14"
-  }
+  },
+  "engine":{
+    "node":"14.17.4"}
 }
