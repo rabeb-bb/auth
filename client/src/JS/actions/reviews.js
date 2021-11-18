@@ -18,7 +18,7 @@ export const getAllReviews = (book_id) => async (dispatch) => {
     dispatch({ type: GET_ALL_REVIEWS, payload: result.data });
   } catch (error) {
     console.log(error.response);
-    dispatch({ type: FAIL_REVIEW, payload: error.response.data });
+    // dispatch({ type: FAIL_REVIEW, payload: error.response.data });
   }
 };
 // get review
@@ -55,18 +55,23 @@ export const deleteReview =
     }
   };
 //Edit review
-export const editReview = (id, review) => async (dispatch) => {
+export const editReview = (review) => async (dispatch) => {
   const config = {
     headers: {
       authorization: localStorage.getItem("token"),
     },
   };
   try {
-    let result = await axios.put(`/api/author/update/${id}`, review);
-    console.log(result);
+    let result = await axios.put(
+      `/api/review/user/update/${review._id}`,
+      review,
+      config
+    );
+
     dispatch({ type: EDIT_REVIEW, payload: result.data });
   } catch (error) {
-    dispatch({ type: FAIL_REVIEW, payload: error.response.data });
+    console.log(error);
+    // dispatch({ type: FAIL_REVIEW, payload: error.response.data });
   }
 };
 //Edit review

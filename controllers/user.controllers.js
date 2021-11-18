@@ -176,7 +176,7 @@ exports.changeRole = async (req, res) => {
     res.status(200).send({ msg: "role is changed", user: updateUser });
     // console.log(updateUser)
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).send({ errors: [{ msg: "could not change userRole" }] });
   }
 };
@@ -200,5 +200,28 @@ exports.getAuthor = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).send({ errors: [{ msg: "could not find author" }] });
+  }
+};
+exports.searchAuthors = async (req, res) => {
+  const { name } = req.body;
+  const regex = new RegExp(name, "i");
+  // const regex2 = new RegExp(isbn, "i");
+  try {
+    const getAllAuthors = await User.find({
+      $or: [
+        // { [author_id.last_name]: `/${author}/i ` },
+        { first_name: { $regex: regex } },
+        { last_name: { $regex: regex } },
+      ],
+      role: "author",
+    }).populate("books");
+    res
+      .status(200)
+      .send({ msg: "found filtered authors", users: getAllAuthors });
+  } catch (error) {
+    console.log(`filtered${error}`);
+    res
+      .status(400)
+      .send({ errors: [{ msg: "could not find filtered authors" }] });
   }
 };

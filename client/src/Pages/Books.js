@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Rating from "@mui/material/Rating";
 import "./Books.css";
 import { searchBooks } from "../JS/actions/books";
+// import { searchAuthors } from "../JS/actions/users";
 import Item from "../Components/item/Item";
 const Books = () => {
   const load = useSelector((state) => state.bookReducer.load);
   const books = useSelector((state) => state.bookReducer.books);
-
+  const users = useSelector((state) => state.userReducer.users);
   // const [searchTerm, setSearchTerm] = useState("");
   // const [genre, setGenre] = useState("");
   // const [author, setAuthor] = useState("");
@@ -23,6 +24,9 @@ const Books = () => {
   // useEffect(() => {
   //   dispatch(getAllBooks());
   // }, [dispatch]);
+  const handleAuthors = (e) => {
+    // dispatch(searchAuthors(e.target.value));
+  };
   const handleFilters = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
@@ -97,7 +101,7 @@ const Books = () => {
                           type="text"
                           className="form-control"
                           name="author"
-                          onChange={(e) => handleFilters(e)}
+                          onChange={(e) => handleAuthors(e)}
                         />
                       </label>
                     </div>
@@ -115,7 +119,7 @@ const Books = () => {
                     {/* END FILTER BY CATEGORY */}
                     <div className="padding" />
                     {/* BEGIN FILTER BY DATE */}
-                    <h4>By date:</h4>
+                    {/* <h4>By date:</h4>
                     From
                     <div
                       className="input-group date form_date"
@@ -140,7 +144,7 @@ const Books = () => {
                         <i className="fa fa-th" />
                       </span>
                     </div>
-                    <input type="hidden" id="dtp_input2" defaultValue />
+                    <input type="hidden" id="dtp_input2" defaultValue /> */}
                     {/* END FILTER BY DATE */}
                     <div className="padding" />
                   </div>
@@ -182,20 +186,6 @@ const Books = () => {
                           >
                             Order by <span className="caret" />
                           </button> */}
-                          {/* <ul className="dropdown-menu" role="menu">
-                            <li>
-                              <a href="#">Name</a>
-                            </li>
-                            <li>
-                              <a href="#">Date</a>
-                            </li>
-                            <li>
-                              <a href="#">View</a>
-                            </li>
-                            <li>
-                              <a href="#">Rating</a>
-                            </li>
-                          </ul> */}
                         </div>
                       </div>
                       {/* END ORDER RESULT */}
@@ -221,66 +211,12 @@ const Books = () => {
                             ? "loading"
                             : books && books.length
                             ? books &&
-                              books.map((el, i) => (
-                                <Item el={el} key={i} />
-                                // <tr>
-                                //   <td className="number text-center">
-                                //     {i + 1}
-                                //   </td>
-                                //   <td className="image">
-                                //     <img src={el.cover} alt="book cover" />
-                                //   </td>
-                                //   <td className="product">
-                                //     <strong>{el.title}</strong>
-                                //     <br />
-                                //     {el.description}
-                                //   </td>
-                                //   <td className="rate text-right">
-                                //     <span>
-                                //       <Rating
-                                //         name="read-only"
-                                //         value={
-                                //           el.count ? el.score / el.count : "0"
-                                //         }
-                                //         readOnly
-                                //       />
-                                //     </span>
-                                //   </td>
-                                //   <td className="price text-right">
-                                //     ${el.price}
-                                //   </td>
-                                // </tr>
-                              ))
+                              books.map((el, i) => <Item el={el} key={i} />)
                             : " no books"}
                         </tbody>
                       </table>
                     </div>
                     {/* END TABLE RESULT */}
-                    {/* BEGIN PAGINATION */}
-                    {/* <ul className="pagination">
-                      <li className="disabled">
-                        <a>«</a>
-                      </li>
-                      <li className="active">
-                        <a>1</a>
-                      </li>
-                      <li>
-                        <a >2</a>
-                      </li>
-                      <li>
-                        <a >3</a>
-                      </li>
-                      <li>
-                        <a >4</a>
-                      </li>
-                      <li>
-                        <a href="#">5</a>
-                      </li>
-                      <li>
-                        <a href="#">»</a>
-                      </li>
-                    </ul> */}
-                    {/* END PAGINATION */}
                   </div>
                   {/* END RESULT */}
                 </div>

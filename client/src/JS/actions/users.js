@@ -143,7 +143,7 @@ export const editUser = (user) => async (dispatch) => {
     let result = await axios.put(`/api/admin/update/${user._id}`, user, config);
     // console.log(result);
     dispatch({ type: EDIT_USER, payload: result.data });
-    dispatch(getAllUsers())
+    dispatch(getAllUsers());
   } catch (error) {
     dispatch({ type: FAIL_USER, payload: error.response.data });
   }
@@ -177,5 +177,16 @@ export const editAccount = (data, history) => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch({ type: FAIL_USER, payload: error.response.data });
+  }
+};
+export const searchUsers = (author) => async (dispatch) => {
+  dispatch({ type: LOAD_USER });
+  try {
+    let result = await axios.post(`/api/user/authors/search`, author);
+    console.log(result);
+    dispatch({ type: GET_ALL_USERS, payload: result.data });
+  } catch (error) {
+    console.log(error.response);
+    dispatch({ type: FAIL_USER, payload: error.response });
   }
 };

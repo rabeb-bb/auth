@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getAllReviews, postReview } from "../../JS/actions/reviews";
+import { editBook } from "../../JS/actions/books";
 import Review from "./Review";
 import Rating from "@mui/material/Rating";
 
@@ -20,6 +21,9 @@ const Reviews = () => {
     user_id: user._id,
     book_id: _id,
   });
+  const book = useSelector((state) => state.bookReducer.book);
+  const [ratedBook, setRatedBook] = useState({ ...book });
+  console.log(ratedBook);
   useEffect(() => {
     dispatch(getAllReviews(_id));
   }, [dispatch]);
@@ -38,7 +42,14 @@ const Reviews = () => {
   };
   const handleReview = () => {
     setReview({ ...review, tags: genre });
+    setRatedBook({
+      ...ratedBook,
+      number_of_reviews: book.number_of_reviews + 1,
+      count: book.count + 1,
+      score: book.score + review.rating,
+    });
     dispatch(postReview(review));
+    // dispatch(editBook(ratedBook));
     setReview({
       title: "",
       rating: 0,
@@ -94,14 +105,19 @@ const Reviews = () => {
             />
             <label>Tags:</label>
             <input
-              className="text-input"
+              className="form-control ml-1 shadow-none"
               name="tag"
               placeholder="Enter book tags"
               required
               onChange={(e) => handleTag(e)}
-              //   value={tag}
+              value={tag}
             />
-            <button onClick={(e) => handleGenre(e)}>Add</button>
+            <button
+              className="btn btn-primary btn-sm shadow-none"
+              onClick={(e) => handleGenre(e)}
+            >
+              Add
+            </button>
             <label>Review:</label>
             <textarea
               name="description"

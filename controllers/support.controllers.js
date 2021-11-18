@@ -71,7 +71,10 @@ exports.getTickets = async (req, res) => {
   try {
     const findTickets = await Ticket.find({
       book_id: req.params.book_id,
-    }).populate("user_id");
+    })
+      .populate("user_id")
+      .populate("reportedReview")
+      .exec();
 
     res
       .status(200)
@@ -81,5 +84,3 @@ exports.getTickets = async (req, res) => {
     res.status(400).send({ errors: [{ msg: "could not find book Tickets" }] });
   }
 };
-
-

@@ -46,7 +46,8 @@ export const getBook = (_id) => async (dispatch) => {
     console.log(result.data);
     dispatch({ type: GET_BOOK, payload: result.data });
   } catch (error) {
-    dispatch({ type: FAIL_BOOK, payload: error.response.data });
+    console.log(error);
+    // dispatch({ type: FAIL_BOOK, payload: error.response.data });
   }
 };
 
@@ -92,21 +93,20 @@ export const deleteBook = (id, history) => async (dispatch) => {
   }
 };
 //Edit book
-export const editBook = (book) => async (dispatch) => {
+export const editBook = (book, id) => async (dispatch) => {
   const config = {
     headers: {
       authorization: localStorage.getItem("token"),
     },
   };
   try {
-    let result = await axios.put(
-      `/api/author/update/${book._id}`,
-      book,
-      config
-    );
+    let result = await axios.put(`/api/book/author/update/${id}`, book, config);
     console.log(result);
-    dispatch({ type: EDIT_BOOK, payload: result.data });
+    // dispatch({ type: EDIT_BOOK, payload: result.data });
+    dispatch(getBook(id));
   } catch (error) {
+    console.log(error);
+
     dispatch({ type: FAIL_BOOK, payload: error.response.data });
   }
 };
@@ -120,7 +120,7 @@ export const postBook = (book, history) => async (dispatch) => {
     },
   };
   try {
-    let { data } = await axios.post(`/api/book/author/upload`, book);
+    let { data } = await axios.post(`/api/book/author/upload`, book, config);
 
     dispatch({ type: POST_BOOK, payload: data });
     history.push("/profile");
@@ -146,8 +146,17 @@ export const getmyBooks = () => async (dispatch) => {
 export const addBook = (book) => async (dispatch) => {
   dispatch({ type: LOAD_BOOK });
   console.log(book);
+  const config = {
+    headers: {
+      authorization: localStorage.getItem("token"),
+    },
+  };
   try {
-    let result = await axios.put(`/api/book/user/add/${book._id}`, book);
+    let result = await axios.put(
+      `/api/book/user/add/${book._id}`,
+      book,
+      config
+    );
     console.log(result.data);
     dispatch({ type: ADD_BOOK, payload: result.data });
   } catch (error) {

@@ -6,8 +6,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const token = localStorage.getItem("token");
   const isAuth = useSelector((state) => state.userReducer.isAuth);
   // const load = useSelector((state) => state.userReducer.load);
-  const admin = useSelector((state) => state.userReducer.admin);
-  if (token && isAuth && admin) {
+  const user = useSelector((state) => state.userReducer.user);
+  if (token && isAuth && user.role === "admin") {
     return <Route component={Component} {...rest} />;
   }
   return <Redirect to="/auth" />;

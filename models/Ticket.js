@@ -18,8 +18,10 @@ const ticketSchema = new Schema({
     required: true,
     default: "active",
   },
-  date_of_release: { type: Date},
+  date: { type: Date },
   user_id: { type: Schema.Types.ObjectId, ref: "User" },
+  reportedReview: { type: Schema.Types.ObjectId, ref: "Review" },
+  reportedUserId: String,
 });
 
 module.exports = mongoose.model("Ticket", ticketSchema);

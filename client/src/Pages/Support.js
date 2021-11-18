@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers, editUser } from "../JS/actions/users";
+import { getAllTickets, editTicket } from "../JS/actions/tickets";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
@@ -20,62 +20,52 @@ const style = {
   p: "1 1",
 };
 
-export default function UsersList() {
+export default function Support() {
   //handle popup
   const [open, setOpen] = React.useState(false);
-  const [user, setUser] = React.useState({
-    memberSince: "",
+  const [ticket, setTicket] = React.useState({
     id: "",
-    email: "",
-    first_name: "",
-    last_name: "",
-    role: "",
+    type: "",
+    content: "",
+    date: "",
+    // user_id: {},
+    // reportedReview: {},
+    reportedUserId: "",
     status: "",
   });
   const handleOpen = (el) => {
-      if(el.status=== "blocked"){
-        setBlock(false)
-      }else{
-        setBlock(true)
-      } 
-      console.log(el)
+    if (el.status === "open") {
+      setClose(false);
+    } else {
+      setClose(true);
+    }
     setOpen(true);
-    setUser(el);
-    console.log(user)
+    setTicket(el);
   };
   const handleClose = () => setOpen(false);
 
-  const users = useSelector((state) => state.userReducer.users);
+  const tickets = useSelector((state) => state.ticketReducer.tickets);
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(getAllUsers());
+    dispatch(getAllTickets());
   }, [dispatch]);
 
   //editing
-  const [block, setBlock] = React.useState(false);
+  const [close, setClose] = React.useState(false);
 
-  const handleRole = (e) => {
-    setUser({ ...user, role: e.target.value });
-    console.log(user)
-    dispatch(editUser(user));
-  };
   const handleStatus = () => {
     let confirm = window.confirm("are you sure you want to block this user?");
     if (confirm) {
-        
-      if (block) {
-        setUser({ ...user, status: "blocked" });
-        console.log(user)
-        console.log(`this the value of block: ${block}`)
-        dispatch(editUser(user));
+      if (ticket.status === "open") {
+        setTicket({ ...ticket, status: "closed" });
+        dispatch(editTicket(ticket));
       } else {
-        setUser({ ...user, 
-        status: "active" });
-        dispatch(editUser(user));
+        setTicket({ ...ticket, status: "open" });
+        dispatch(editTicket(ticket));
       }
     }
+    setClose(!close);
   };
-
 
   return (
     <div style={{ height: 400, width: "100%" }}>
@@ -85,25 +75,24 @@ export default function UsersList() {
             <td>N</td>
             <td>ID</td>
             <td>Email</td>
-            <td>Role</td>
+            <td>Type</td>
             <td>Status</td>
-            <td>Edit</td>
+            <td>Date</td>
+            <td>check</td>
           </thead>
           <tbody>
-            {users &&
-              users.map((el, i) => (
+            {tickets &&
+              tickets.map((el, i) => (
                 <tr key={i}>
                   <td className="number text-center">{i}</td>
+                  <td className="product">{el._id}</td>
                   <td className="product">
-                    {el._id}
+                    <strong>{el.user_id.email}</strong>
                   </td>
-                  <td className="product">
-                    <strong>{el.email}</strong>
-                  </td>
-                  <td className="text-right">{el.role}</td>
+                  <td className="text-right">{el.type}</td>
                   <td className="text-right">{el.status}</td>
-                  {/* <td className="text-right">{el.memberSince}</td> */}
-                  
+                  <td className="text-right">{el.date}</td>
+
                   <td className="text-right">
                     <IconButton
                       aria-label="edit"
@@ -115,7 +104,7 @@ export default function UsersList() {
                     <div>
                       <Modal
                         open={open}
-                        onClose={()=>handleClose()}
+                        onClose={() => handleClose()}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                       >
@@ -128,7 +117,7 @@ export default function UsersList() {
                                     className="modal-title"
                                     id="exampleModalLabel"
                                   >
-                                    User Information
+                                    ticket Information
                                   </h5>
                                 </div>
                                 <div className="modal-body">
@@ -138,46 +127,72 @@ export default function UsersList() {
                                         <table className="table table-borderless">
                                           <tbody>
                                             <tr>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="profile">
                                                   {" "}
                                                   <img
                                                     src={
-                                                      user.profile_picture
-                                                        ? user.profile_picture
+                                                      ticket.user_id
+                                                        .profile_picture
+                                                        ? ticket._id
+                                                            .profile_picture
                                                         : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
                                                     }
                                                     width={70}
                                                     className="rounded-circle img-thumbnail"
-                                                    alt={user.first_name}
+                                                    alt={ticket.first_name}
                                                   />
                                                 </div>
                                               </td>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
                                                     Name
                                                   </span>{" "}
                                                   <span className="subheadings">
-                                                    {`${user.first_name} ${user.last_name}`}
+                                                    {`${ticket.user_id.first_name} ${ticket.user_id.last_name}`}
                                                   </span>{" "}
                                                 </div>
                                               </td>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
-                                                    Birth Date
+                                                    Email
                                                   </span>{" "}
                                                   <span className="subheadings">
-                                                    {user.date_of_birth}
+                                                    {ticket.user_id.email}
+                                                  </span>{" "}
+                                                </div>
+                                              </td>
+                                              <td className="col-md-2">
+                                                <div className="d-flex flex-column">
+                                                  {" "}
+                                                  <span className="heading d-block">
+                                                    Type
+                                                  </span>{" "}
+                                                  <span className="subheadings">
+                                                    {/* <i className="dots" />{" "} */}
+                                                    {ticket.type}
                                                   </span>{" "}
                                                 </div>
                                               </td>
                                             </tr>
                                             <tr>
-                                              <td>
+                                              <td className="col-md-2">
+                                                <div className="d-flex flex-column">
+                                                  {" "}
+                                                  <span className="heading d-block">
+                                                    Date
+                                                  </span>{" "}
+                                                  <span className="subheadings">
+                                                    {/* <i className="dots" />{" "} */}
+                                                    {ticket.date}
+                                                  </span>{" "}
+                                                </div>
+                                              </td>
+                                              <td className="col-md-2">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
@@ -185,60 +200,69 @@ export default function UsersList() {
                                                   </span>{" "}
                                                   <span className="subheadings">
                                                     {/* <i className="dots" />{" "} */}
-                                                    {user.status}
+                                                    {ticket.status}
                                                   </span>{" "}
                                                 </div>
                                               </td>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
-                                                    Role
+                                                    Topic
                                                   </span>{" "}
                                                   <span className="subheadings">
                                                     {/* <i className="dots" />{" "} */}
-                                                    {user.role}
+                                                    {ticket.topic}
                                                   </span>{" "}
                                                 </div>
                                               </td>
-                                            
+                                            </tr>
+                                            <tr className="col-md-8">
+                                              <div className="d-flex flex-column">
+                                                {" "}
+                                                <span className="heading d-block">
+                                                  Content
+                                                </span>{" "}
+                                                <span className="subheadings">
+                                                  {/* <i className="dots" />{" "} */}
+                                                  {ticket.content}
+                                                </span>{" "}
+                                              </div>
                                             </tr>
                                             <tr>
                                               <td>
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
-                                                    Change User Role:
+                                                    Reported Review
                                                   </span>{" "}
-                                                  <select className="form-control"
-                                                    onChange={(e) =>
-                                                      handleRole(e)
-                                                    }
-                                                  >
-                                                    <option>choose role</option>
-                                                    <option value="reader">
-                                                      reader
-                                                    </option>
-                                                    <option value="author">
-                                                      author
-                                                    </option>
-                                                    <option value="admin">
-                                                      admin
-                                                    </option>
-                                                  </select>
+                                                  <span className="subheadings">
+                                                    {/* <i className="dots" />{" "} */}
+                                                    {ticket.reportedReview &&
+                                                      "-"}
+                                                  </span>{" "}
                                                 </div>
                                               </td>
-                                              
+                                              <td>
+                                                <div className="d-flex flex-column">
+                                                  {" "}
+                                                  <span className="heading d-block">
+                                                    Reported User
+                                                  </span>{" "}
+                                                  <span className="subheadings">
+                                                    {/* <i className="dots" />{" "} */}
+                                                    {ticket.reportedUserId &&
+                                                      "-"}
+                                                  </span>{" "}
+                                                </div>
+                                              </td>
                                               <td>
                                                 <button
-                                                className="btn"
-                                                  onClick={() =>
-                                                    handleStatus()
-                                                  }
+                                                  className="btn btn-primary"
+                                                  onClick={() => handleStatus()}
                                                 >
-                                                  {block
-                                                    ? "Unblock"
-                                                    : "Block"}
+                                                  {/* {close ? "open" : "close"} */}
+                                                  close
                                                 </button>
                                               </td>
                                             </tr>

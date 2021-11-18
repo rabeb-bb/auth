@@ -10,8 +10,9 @@ exports.bookUpload = async (req, res) => {
     if (findBook) {
       return res.status(400).send({ errors: [{ msg: "book already exists" }] });
     }
-
     let result;
+    console.log("test");
+    console.log(req.files);
     if (req.file) {
       result = await cloudinary.uploader.upload(req.file.path);
     }
@@ -135,18 +136,45 @@ exports.getBooks = async (req, res) => {
 //get all books
 exports.searchBooks = async (req, res) => {
   const { title, genre, year, isbn } = req.body;
+  // console.log(req.body);
   const regex = new RegExp(title, "i");
+  // const regex2 = new RegExp(isbn, "i");
   try {
+    let filteredBooks = [];
+    // if (title) {
+    //   const titled = await Book.find({ title: { $regex: regex } }).populate([
+    //     "author_id",
+    //     "reader_id",
+    //   ]);
+    //   console.log(titled);
+    //   filteredBooks = [...filteredBooks, ...titled];
+    // }
+    // if (isbn) {
+    //   const booksIsbn = await Book.find({ isbn: isbn }).populate([
+    //     "author_id",
+    //     "reader_id",
+    //   ]);
+    //   filteredBooks = [...filteredBooks, ...booksIsbn];
+    // }
+    // if (genre) {
+    //   const tagged = await Book.find({
+    //     tags: { $in: [genre] },
+    //   }).populate(["author_id", "reader_id"]);
+    //   console.log(tagged);
+    //   filteredBooks = [...filteredBooks, ...tagged];
+    // }
+
     const getAllBooks = await Book.find({
-      $or: [
-        // { title: `/${title}/i ` },
+      // { [author_id.last_name]: `/${author}/i ` },
+      $and: [
         { title: { $regex: regex } },
-        { isbn: `/${isbn}/i ` },
+        // { isbn: isbn },
         { tags: { $in: [genre] } },
       ],
     })
       .populate(["author_id", "reader_id"])
       .exec();
+    // console.log(filteredBooks);
     res.status(200).send({ msg: "found filtered books", books: getAllBooks });
   } catch (error) {
     console.log(`filtered${error}`);

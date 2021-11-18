@@ -15,7 +15,14 @@ const NewReleases = () => {
   //     dispatch(getBookById())
   //   }
   return (
-    <div className="container">
+    <div
+      className="container"
+      style={{
+        maxHeight: "900px",
+        overflow: "scroll",
+        overflowX: "hidden",
+      }}
+    >
       <h3>Books</h3>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {books &&

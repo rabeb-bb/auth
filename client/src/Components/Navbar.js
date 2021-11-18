@@ -42,7 +42,7 @@ const Search = styled("div")(({ theme }) => ({
 const theme = createTheme({
   palette: {
     secondary: {
-      main: "#fff",
+      main: "#f1f6f5",
     },
   },
 });

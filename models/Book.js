@@ -29,9 +29,9 @@ const bookSchema = new Schema({
   file: {
     type: String,
   },
-  date_of_release: { type: Date, default: Date.now },
-  score: Number,
-  count: Number,
+  date_of_release: { type: Date },
+  score: { type: Number, default: 0 },
+  count: { type: Number, default: 0 },
   author_id: { type: Schema.Types.ObjectId, ref: "User" },
   reader_id: [{ type: Schema.Types.ObjectId, ref: "User" }],
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],

@@ -30,11 +30,13 @@ const { bookValidate } = require("../middleware/validateBook");
 // Upload Book
 router.post(
   "/author/upload",
-  // upload.single("cover"),
-  bookUpload,
+  upload.single("cover"),
+
   isAuth,
+
+  bookValidate(),
   validation,
-  bookValidate
+  bookUpload
 );
 //update book information
 router.put("/author/update/:_id", isAuth, bookUpdate);

@@ -46,7 +46,7 @@ const ticketReducer = (state = initialState, { type, payload }) => {
 
         load: false,
       };
-    case POST_Ticket:
+    case POST_TICKET:
       return {
         ...state,
         ticket: payload.ticket,

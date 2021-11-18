@@ -12,7 +12,7 @@ const {
   loginValidate,
   validation,
 } = require("../middleware/validateUser");
-const isAuth = require("../middleware/isAuth");
+const adminAuth = require("../middleware/adminAuth");
 const router = express.Router();
 
 // router.get("/", (req, res) => {
@@ -20,18 +20,18 @@ const router = express.Router();
 // }); =====>works
 // *****************
 
-//get book tickets
-router.get("/book_tickets/:book_id", getTickets);
+//get tickets
+router.get("/all", getTickets);
 //get user tickets
 // router.get("/user_tickets/:user_id", getUserTickets);
 //delete ticket
-router.get("/user/:_id", getTicketById);
+// router.get("/user/:_id", adminAuth, getTicketById);
 
 //user
 // Post ticket
 router.post("/post", postTicket);
 //update ticket
-router.put("/user/update/:_id", ticketUpdate);
+router.put("/admin/update/:_id", adminAuth, ticketUpdate);
 //delete ticket
 // router.delete("/user/delete/:_id", ticketDelete);
 

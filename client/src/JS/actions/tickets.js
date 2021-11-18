@@ -1,41 +1,41 @@
 import axios from "axios";
 import {
-  DELETE_REVIEW,
-  EDIT_REVIEW,
-  FAIL_REVIEW,
-  GET_ALL_REVIEWS,
-  POST_REVIEW,
-  GET_REVIEW,
-  LOAD_REVIEW,
-} from "../constants/review-types";
+  DELETE_TICKET,
+  EDIT_TICKET,
+  FAIL_TICKET,
+  GET_ALL_TICKETS,
+  POST_TICKET,
+  GET_TICKET,
+  LOAD_TICKET,
+} from "../constants/ticket-types";
 
-// get all reviews
-export const getAllReviews = (book_id) => async (dispatch) => {
-  dispatch({ type: LOAD_REVIEW });
+// get all Tickets
+export const getAllTickets = (book_id) => async (dispatch) => {
+  dispatch({ type: LOAD_TICKET });
   try {
-    let result = await axios.get(`/api/review//book_reviews/${book_id}`);
+    let result = await axios.get(`/api/support/all`);
 
-    dispatch({ type: GET_ALL_REVIEWS, payload: result.data });
+    dispatch({ type: GET_ALL_TICKETS, payload: result.data });
   } catch (error) {
     console.log(error.response);
-    dispatch({ type: FAIL_REVIEW, payload: error.response.data });
+    dispatch({ type: FAIL_TICKET, payload: error.response.data });
   }
 };
-// get review
-export const getReview = (_id) => async (dispatch) => {
-  dispatch({ type: LOAD_REVIEW });
+// get Ticket
+export const getTicket = (_id) => async (dispatch) => {
+  dispatch({ type: LOAD_TICKET });
   try {
-    let result = await axios.get(`/api/review/review/${_id}`);
+    let result = await axios.get(`/api/support/ticket/${_id}`);
     console.log(result.data);
-    dispatch({ type: GET_REVIEW, payload: result.data });
+    dispatch({ type: GET_TICKET, payload: result.data });
   } catch (error) {
     console.log(error.response.data);
-    dispatch({ type: FAIL_REVIEW, payload: error.response.data });
+    dispatch({ type: FAIL_TICKET, payload: error.response.data });
   }
 };
-// get review for author only
-export const deleteReview =
-  ({ review }) =>
+// get Ticket for author only
+export const deleteTicket =
+  ({ ticket }) =>
   async (dispatch) => {
     const config = {
       headers: {
@@ -44,43 +44,48 @@ export const deleteReview =
     };
     try {
       let result = await axios.delete(
-        `/api/review/author/delete/${review._id}`,
+        `/api/support/author/delete/${ticket._id}`,
         config
       );
       console.log(result);
-      dispatch({ type: DELETE_REVIEW, payload: result.data });
-      dispatch(getAllReviews());
+      dispatch({ type: DELETE_TICKET, payload: result.data });
+      dispatch(getAllTickets());
     } catch (error) {
-      dispatch({ type: FAIL_REVIEW, payload: error.response.data });
+      dispatch({ type: FAIL_TICKET, payload: error.response.data });
     }
   };
-//Edit review
-export const editReview = (id, review) => async (dispatch) => {
+//Edit Ticket
+export const editTicket = (ticket) => async (dispatch) => {
   const config = {
     headers: {
       authorization: localStorage.getItem("token"),
     },
   };
   try {
-    let result = await axios.put(`/api/author/update/${id}`, review);
+    let result = await axios.put(
+      `/api/support/admin/update/${ticket._id}`,
+      ticket,
+      config
+    );
     console.log(result);
-    dispatch({ type: EDIT_REVIEW, payload: result.data });
+    dispatch({ type: EDIT_TICKET, payload: result.data });
+    dispatch(getAllTickets());
   } catch (error) {
-    dispatch({ type: FAIL_REVIEW, payload: error.response.data });
+    dispatch({ type: FAIL_TICKET, payload: error.response.data });
   }
 };
-//Edit review
-export const postReview = (review) => async (dispatch) => {
+//Edit Ticket
+export const postTicket = (ticket) => async (dispatch) => {
   const config = {
     headers: {
       authorization: localStorage.getItem("token"),
     },
   };
   try {
-    let result = await axios.post(`/api/review/post`, review, config);
+    let result = await axios.post(`/api/support/post`, ticket, config);
     console.log(result);
-    dispatch({ type: POST_REVIEW, payload: result.data });
+    dispatch({ type: POST_TICKET, payload: result.data });
   } catch (error) {
-    dispatch({ type: FAIL_REVIEW, payload: error.response.data });
+    dispatch({ type: FAIL_TICKET, payload: error.response.data });
   }
 };

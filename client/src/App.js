@@ -51,8 +51,9 @@ function App() {
           <PrivateRoute path="/account" component={Account} />
           <PrivateRoute path="/upload" component={BookForm} />
           <AdminRoute exact path="/admin" component={Admin} />
-          <AdminRoute path="/admin/tickets" component={Support} />
+
           <AdminRoute path="/admin/users" component={UserList} />
+          <AdminRoute path="/admin/tickets" component={Support} />
           <AdminRoute path="/admin/user/:_id" component={User} />
           <Route path="/auth" component={NotAuth} />
 

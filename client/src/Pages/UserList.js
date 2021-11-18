@@ -33,15 +33,15 @@ export default function UsersList() {
     status: "",
   });
   const handleOpen = (el) => {
-      if(el.status=== "blocked"){
-        setBlock(false)
-      }else{
-        setBlock(true)
-      } 
-      console.log(el)
+    if (el.status === "blocked") {
+      setBlock(false);
+    } else {
+      setBlock(true);
+    }
+    console.log(el);
     setOpen(true);
     setUser(el);
-    console.log(user)
+    console.log(user);
   };
   const handleClose = () => setOpen(false);
 
@@ -56,26 +56,23 @@ export default function UsersList() {
 
   const handleRole = (e) => {
     setUser({ ...user, role: e.target.value });
-    console.log(user)
+    console.log(user);
     dispatch(editUser(user));
   };
   const handleStatus = () => {
     let confirm = window.confirm("are you sure you want to block this user?");
     if (confirm) {
-        
       if (block) {
         setUser({ ...user, status: "blocked" });
-        console.log(user)
-        console.log(`this the value of block: ${block}`)
+        console.log(user);
+        console.log(`this the value of block: ${block}`);
         dispatch(editUser(user));
       } else {
-        setUser({ ...user, 
-        status: "active" });
+        setUser({ ...user, status: "active" });
         dispatch(editUser(user));
       }
     }
   };
-
 
   return (
     <div style={{ height: 400, width: "100%" }}>
@@ -94,16 +91,14 @@ export default function UsersList() {
               users.map((el, i) => (
                 <tr key={i}>
                   <td className="number text-center">{i}</td>
-                  <td className="product">
-                    {el._id}
-                  </td>
+                  <td className="product">{el._id}</td>
                   <td className="product">
                     <strong>{el.email}</strong>
                   </td>
                   <td className="text-right">{el.role}</td>
                   <td className="text-right">{el.status}</td>
                   {/* <td className="text-right">{el.memberSince}</td> */}
-                  
+
                   <td className="text-right">
                     <IconButton
                       aria-label="edit"
@@ -115,7 +110,7 @@ export default function UsersList() {
                     <div>
                       <Modal
                         open={open}
-                        onClose={()=>handleClose()}
+                        onClose={() => handleClose()}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                       >
@@ -138,7 +133,7 @@ export default function UsersList() {
                                         <table className="table table-borderless">
                                           <tbody>
                                             <tr>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="profile">
                                                   {" "}
                                                   <img
@@ -153,7 +148,7 @@ export default function UsersList() {
                                                   />
                                                 </div>
                                               </td>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
@@ -164,7 +159,7 @@ export default function UsersList() {
                                                   </span>{" "}
                                                 </div>
                                               </td>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
@@ -177,7 +172,7 @@ export default function UsersList() {
                                               </td>
                                             </tr>
                                             <tr>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
@@ -189,7 +184,7 @@ export default function UsersList() {
                                                   </span>{" "}
                                                 </div>
                                               </td>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
@@ -201,16 +196,16 @@ export default function UsersList() {
                                                   </span>{" "}
                                                 </div>
                                               </td>
-                                            
                                             </tr>
                                             <tr>
-                                              <td>
+                                              <td className="col-md-2">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
                                                     Change User Role:
                                                   </span>{" "}
-                                                  <select className="form-control"
+                                                  <select
+                                                    className="form-control"
                                                     onChange={(e) =>
                                                       handleRole(e)
                                                     }
@@ -228,17 +223,13 @@ export default function UsersList() {
                                                   </select>
                                                 </div>
                                               </td>
-                                              
+
                                               <td>
                                                 <button
-                                                className="btn"
-                                                  onClick={() =>
-                                                    handleStatus()
-                                                  }
+                                                  className="btn btn-primary"
+                                                  onClick={() => handleStatus()}
                                                 >
-                                                  {block
-                                                    ? "Unblock"
-                                                    : "Block"}
+                                                  {block ? "Unblock" : "Block"}
                                                 </button>
                                               </td>
                                             </tr>

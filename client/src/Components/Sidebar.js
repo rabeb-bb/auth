@@ -18,18 +18,18 @@ export default function Sidebar() {
       <Link to="/admin/users">
         <MenuItem>Users</MenuItem>
       </Link>
-      <Link to="/admin/reviews">
+      {/* <Link to="/admin/reviews">
         <MenuItem>Reviews</MenuItem>
-      </Link>
-      <Link to="/admin/books">
+      </Link> */}
+      {/* <Link to="/admin/books">
         <MenuItem>Books</MenuItem>
-      </Link>
-      <Link to="/admin/reports">
+      </Link> */}
+      <Link to="/admin/tickets">
         <MenuItem>Reports</MenuItem>
       </Link>
-      <Link to="/admin/orders">
+      {/* <Link to="/admin/orders">
         <MenuItem>Orders</MenuItem>
-      </Link>
+      </Link> */}
     </div>
   );
 }

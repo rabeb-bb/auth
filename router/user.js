@@ -4,6 +4,7 @@ const {
   Login,
   getAuthor,
   EditInfo,
+  searchAuthors,
 } = require("../controllers/user.controllers");
 const {
   registerValidate,
@@ -34,6 +35,7 @@ router.get("/current", isAuth, (req, res) => {
 router.put("/edit/:_id", upload.single("profile_picture"), isAuth, EditInfo);
 //get author
 router.get("/author/:author_id", getAuthor);
+router.post("/authors/search", searchAuthors);
 
 //export
 module.exports = router;

@@ -55,6 +55,13 @@ const BookForm = ({ history }) => {
       rating: 0,
     });
   };
+  const handleRemoveTag = (e, elmt) => {
+    e.preventDefault();
+    setBook({
+      ...book,
+      tags: genre.filter((el) => el === elmt),
+    });
+  };
   const handleTag = (e) => {
     setTag(e.target.value);
   };
@@ -114,19 +121,38 @@ const BookForm = ({ history }) => {
           value={book.date_of_release}
         />
         <label>Tags:</label>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <input
             className="form-control"
-            name="email"
+            name="tag"
             placeholder="Enter book tags"
-            required
             onChange={(e) => handleTag(e)}
-            //   value={tag}
+            value={tag}
           />
-          <button onClick={(e) => handleGenre(e)} className="btn btn-light ">
+          <button
+            onClick={(e) => handleGenre(e)}
+            className="btn btn-light "
+            style={{ height: "5%" }}
+          >
             Add
           </button>
+
+          {/* {genre.map((el) => (
+            <p>{el}</p>
+          ))} */}
         </div>
+        {genre.map((el, i) => (
+          <span style={{ margin: "1%" }}>
+            {" "}
+            {el}
+            {/* <button
+              className="btn btn-light "
+              onClick={(e) => handleRemoveTag(el)}
+            >
+              <i className="fa fa-trash"></i>
+            </button> */}
+          </span>
+        ))}
         <label>Synopsis</label>
         <textarea
           className="form-control"

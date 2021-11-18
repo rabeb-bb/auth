@@ -30,7 +30,7 @@ const BookEdit = ({ book, setShow }) => {
     formData.append("price", book2Edit.price);
     formData.append("rating", book2Edit.rating);
     setShow(false);
-    dispatch(editBook(formData));
+    dispatch(editBook(formData, book2Edit._id));
     setShow(false);
     e.preventDefault();
   };

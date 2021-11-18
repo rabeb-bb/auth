@@ -23,17 +23,17 @@ const router = express.Router();
 //get book reviews
 router.get("/book_reviews/:book_id", getReviews);
 //get user reviews
-router.get("/user_reviews/:user_id", getUserReviews);
+router.get("/user_reviews/:user_id", isAuth, getUserReviews);
 //delete review
-router.get("/user/:_id", getReviewById);
+router.get("/user/:_id", isAuth, getReviewById);
 
 //user
 // Post review
-router.post("/post", postReview);
+router.post("/post", isAuth, postReview);
 //update review
-router.put("/user/update/:_id", reviewUpdate);
+router.put("/user/update/:_id", isAuth, reviewUpdate);
 //delete review
-router.delete("/user/delete/:_id", reviewDelete);
+router.delete("/user/delete/:_id", isAuth, reviewDelete);
 
 //export
 module.exports = router;

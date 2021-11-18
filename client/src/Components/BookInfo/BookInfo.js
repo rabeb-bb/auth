@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllReviews } from "../../JS/actions/reviews";
 import {
   getBook,
   editBook,
@@ -11,12 +12,14 @@ import BookEdit from "../../Components/BookEdit";
 import Rating from "@mui/material/Rating";
 import "./BookInfo.css";
 import { Link, useParams, useHistory } from "react-router-dom";
+import { time_ago } from "../../utilities/time";
 // import { getAuthor } from "../../JS/actions/users";
 // import { useParams } from "react-router";
 
 const BookInfo = () => {
   const user = useSelector((state) => state.userReducer.user);
   const book = useSelector((state) => state.bookReducer.book);
+  const reviews = useSelector((state) => state.reviewReducer.reviews);
 
   const load = useSelector((state) => state.userReducer.load);
   const { _id } = useParams();
@@ -25,27 +28,29 @@ const BookInfo = () => {
   const [show, setShow] = useState(false);
   const [shelved, setShelved] = useState(false);
   const [book2Shelve, setBook2Shelve] = useState({ ...book });
-  const [book2Edit, setBook2Edit] = useState(book);
-  console.log(_id)
+  const [book2Edit, setBook2Edit] = useState({ ...book });
+  console.log(_id);
 
   useEffect(() => {
     dispatch(getBook(_id));
+    dispatch(getAllReviews(_id));
   }, [dispatch]);
 
   // console.log(book);
   const handleEdit = () => {
     setShow(true);
   };
+
   // if (
   //   book.reader_id &&
   //   book.reader_id.filter((el) => el._id === user._id).length
   // ) {
   //   setShelved(true);
   // }
-  // const handleSave = () => {
-  //   dispatch(editBook(book2Edit));
-  //   setShow(false);
-  // };
+  const handleSave = () => {
+    dispatch(editBook(book2Edit));
+    setShow(false);
+  };
   const handleDelete = () => {
     let confirm = window.confirm("are you sure you want to delete this user?");
     if (confirm) {
@@ -53,8 +58,11 @@ const BookInfo = () => {
     }
   };
   console.log(`this is the loaded book ${book}`);
-  const handleShelf = () => {
-    setBook2Shelve({ ...book, reader_id: [...book.reader_id, user] });
+  const handleShelf = async () => {
+    await setBook2Shelve({
+      ...book,
+      reader_id: [...book.reader_id, user._id],
+    });
     console.log(`book ${book}`);
     console.log(`book2Shelve ${book2Shelve}`);
     console.log(`shelved ${shelved}`);
@@ -82,15 +90,34 @@ const BookInfo = () => {
             />
           </div>
           <div className="col-md-6 mt-1">
-            <h5>{book.title}</h5>
+            <h5>{book && book.title}</h5>
             <div className="d-flex flex-row">
               <div className="ratings mr-2">
                 <Rating
-                  name="read-only"
-                  value={book && (book.count ? book.score / book.count : "0")}
+                  // value={book && (book.count ? book.score / book.count : "0")}
+                  value={
+                    reviews &&
+                    reviews.length &&
+                    (
+                      reviews
+                        .map((el) => el.rating)
+                        .reduce((acc, v) => acc + v) / reviews.length
+                    ).toFixed(2)
+                  }
+                  readOnly
+                  precision={0.1}
                 />{" "}
+                {reviews &&
+                  reviews.length &&
+                  (
+                    reviews.map((el) => el.rating).reduce((acc, v) => acc + v) /
+                    reviews.length
+                  ).toFixed(2)}
+                <br />
+                {/* {reviews.map((el) => console.log(el.rating))} */}
+                {reviews && reviews.length}Reviews
               </div>
-              <span> {book.count} reviews</span>
+              {/* <span> {book.count} reviews</span> */}
             </div>
             <div className="mt-1 mb-1 spec-1">
               <span>
@@ -101,7 +128,16 @@ const BookInfo = () => {
                 </Link>
                 <br />
               </span>
-              <span>{book && book.date_of_release}</span>
+              <span>{book && time_ago(book.date_of_release)}</span>
+              <span>
+                {/* {book &&
+                  book.date_of_release.getMonth() +
+                    1 +
+                    "/" +
+                    book.date_of_release.getDay() +
+                    "/" +
+                    book.date_of_release.getFullYear()} */}
+              </span>
               {/* <span className="dot" />
                 <span>Light weight</span>
                 <span className="dot" /> */}
@@ -120,14 +156,14 @@ const BookInfo = () => {
               </ul>
             </div>
             <p className="text-justify para mb-0">
-              {book.description}
+              {book && book.description}
               <br />
               <br />
             </p>
           </div>
           <div className="align-items-center align-content-center col-md-3 border-left mt-1">
             <div className="d-flex flex-row align-items-center">
-              <h4 className="mr-1">${book.price}</h4>
+              <h4 className="mr-1">${book && book.price}</h4>
               {/* <span className="strike-text">$20.99</span> */}
             </div>
             {/* <h6 className="text-success">Free shipping</h6> */}
