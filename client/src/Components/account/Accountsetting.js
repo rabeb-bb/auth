@@ -65,6 +65,7 @@ const Accountsetting = () => {
                 <div className="col-md-6">
                   <label className="labels">Name</label>
                   <input
+                    style={{ height: "40px" }}
                     type="text"
                     className="form-control"
                     placeholder="first name"
@@ -76,8 +77,9 @@ const Accountsetting = () => {
                 <div className="col-md-6">
                   <label className="labels">Surname</label>
                   <input
+                    style={{ height: "40px" }}
                     type="text"
-                    className="form-control"
+                    className="form-control ml-2 shadow-none"
                     placeholder="surname"
                     name="last_name"
                     value={userEdit.last_name}
@@ -89,10 +91,11 @@ const Accountsetting = () => {
                 <div className="col-md-12">
                   <label className="labels">Upload a new profile photo</label>
                   <input
+                    style={{ height: "40px" }}
                     accept=".png, .jpg, .jpeg"
                     name="profile_picture"
                     type="file"
-                    className="form-control"
+                    className="form-control ml-2 shadow-none"
                     onChange={handleImage}
                   />
                   {/* <button onClick={(e) => handleUpload(e)}>save image</button> */}
@@ -102,7 +105,7 @@ const Accountsetting = () => {
                   <textarea
                     name="about_me"
                     type="text"
-                    className="form-control"
+                    className="form-control ml-2 shadow-none textarea"
                     placeholder="enter bio"
                     value={userEdit.about_me}
                     onChange={(e) => handleChange(e)}
@@ -111,9 +114,10 @@ const Accountsetting = () => {
                 <div className="col-md-12">
                   <label className="labels">Date of birth</label>
                   <input
+                    style={{ height: "40px" }}
                     name="date_of_birth"
                     type="date"
-                    className="form-control"
+                    className="form-control ml-2 shadow-none"
                     placeholder="enter address line 2"
                     value={userEdit.date_of_birth}
                     onChange={(e) => handleChange(e)}

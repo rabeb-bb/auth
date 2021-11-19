@@ -16,11 +16,14 @@ const NewReleases = () => {
   //   }
   return (
     <div
-      className="container"
       style={{
-        maxHeight: "900px",
+        maxHeight: "100%",
         overflow: "scroll",
         overflowX: "hidden",
+        margin: "3%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "start",
       }}
     >
       <h3>Books</h3>

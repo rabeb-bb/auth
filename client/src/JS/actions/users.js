@@ -77,7 +77,17 @@ export const emptyErrors = () => {
     type: "EMPTY_ERRORS",
   };
 };
-
+export const searchUsers = (name) => async (dispatch) => {
+  dispatch({ type: LOAD_USER });
+  try {
+    let result = await axios.post(`/api/user/authors/search`, name);
+    console.log(result);
+    dispatch({ type: GET_ALL_USERS, payload: result.data });
+  } catch (error) {
+    console.log(error.response);
+    dispatch({ type: FAIL_USER, payload: error.response });
+  }
+};
 // get all users for admin only
 export const getAllUsers = () => async (dispatch) => {
   dispatch({ type: LOAD_USER });
@@ -174,19 +184,28 @@ export const editAccount = (data, history) => async (dispatch) => {
 
     dispatch({ type: EDIT_USER_ACCOUNT, payload: result.data });
     // history.go("/profile");
+    dispatch(current());
   } catch (error) {
     console.log(error);
     dispatch({ type: FAIL_USER, payload: error.response.data });
   }
 };
-export const searchUsers = (author) => async (dispatch) => {
-  dispatch({ type: LOAD_USER });
+export const add2MyShelf = (data) => async (dispatch) => {
+  const config = {
+    headers: {
+      authorization: localStorage.getItem("token"),
+    },
+  };
+  const user_id = localStorage.getItem("userID");
   try {
-    let result = await axios.post(`/api/user/authors/search`, author);
-    console.log(result);
-    dispatch({ type: GET_ALL_USERS, payload: result.data });
+    let result = await axios.put(`/api/user/addBook/${user_id}`, data, config);
+    // console.log(result);
+
+    dispatch({ type: EDIT_USER_ACCOUNT, payload: result.data });
+    // history.go("/profile");
+    dispatch(current());
   } catch (error) {
-    console.log(error.response);
-    dispatch({ type: FAIL_USER, payload: error.response });
+    console.log(error);
+    dispatch({ type: FAIL_USER, payload: error.response.data });
   }
 };

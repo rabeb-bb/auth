@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "@mui/material/Rating";
 import "./Books.css";
-import { searchBooks } from "../JS/actions/books";
+import { searchBooks, getAllBooks } from "../JS/actions/books";
 // import { searchAuthors } from "../JS/actions/users";
 import Item from "../Components/item/Item";
+import { searchUsers } from "../JS/actions/users";
+
 const Books = () => {
   const load = useSelector((state) => state.bookReducer.load);
   const books = useSelector((state) => state.bookReducer.books);
@@ -12,7 +14,8 @@ const Books = () => {
   // const [searchTerm, setSearchTerm] = useState("");
   // const [genre, setGenre] = useState("");
   // const [author, setAuthor] = useState("");
-  // const [isbn, setIsbn] = useState("");
+  const [authorBooks, setauthorBooks] = useState([]);
+
   const [filters, setFilters] = useState({
     title: "",
     genre: "",
@@ -21,9 +24,12 @@ const Books = () => {
     year: "",
   });
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getAllBooks());
-  // }, [dispatch]);
+  useEffect(() => {
+    // dispatch(getAllBooks());
+    for (let index = 0; index < users.length; index++) {
+      setauthorBooks([...authorBooks, ...users[index].books]);
+    }
+  }, [dispatch, users]);
   const handleAuthors = (e) => {
     // dispatch(searchAuthors(e.target.value));
   };
@@ -32,6 +38,7 @@ const Books = () => {
   };
   const handleSearch = (e) => {
     dispatch(searchBooks(filters));
+    dispatch(searchUsers(filters));
   };
   return (
     <div id="books">
@@ -68,6 +75,7 @@ const Books = () => {
                               <option value="Children">Children</option>
                               <option value="Classic">Classic</option>
                               <option value="Comedy">Comedy</option>
+                              <option value="Contemporary">Contemporary</option>
                               <option value="Cuisine">Cuisine</option>
                               <option value="Fantasy">Fantasy</option>
                               <option value="Historial">Historial</option>
@@ -82,7 +90,7 @@ const Books = () => {
                               <option value="Psychology">Psychology</option>
                               <option value="Religion">Religion</option>
                               <option value="Romance">Romance</option>
-                              <option value="Sience">Sience</option>
+                              <option value="Science">Science</option>
                               <option value="Sci-fi">Sci-fi</option>
                               <option value="Self-help">Self-help</option>
                               <option value="Sports">Sports</option>
@@ -101,7 +109,7 @@ const Books = () => {
                           type="text"
                           className="form-control"
                           name="author"
-                          onChange={(e) => handleAuthors(e)}
+                          onChange={handleFilters}
                         />
                       </label>
                     </div>
@@ -154,7 +162,7 @@ const Books = () => {
                     <h2>Browse Books</h2>
                     <hr />
                     {/* BEGIN SEARCH INPUT */}
-                    <div className="input-group">
+                    <div className="input-group d-flex align-items-center">
                       <input
                         type="text"
                         name="title"
@@ -189,7 +197,7 @@ const Books = () => {
                         </div>
                       </div>
                       {/* END ORDER RESULT */}
-                      <div className="col-md-6 text-right">
+                      {/* <div className="col-md-6 text-right">
                         <div className="btn-group">
                           <button
                             type="button"
@@ -201,7 +209,7 @@ const Books = () => {
                             <i className="fa fa-th" />
                           </button>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     {/* BEGIN TABLE RESULT */}
                     <div className="table-responsive">
@@ -211,8 +219,19 @@ const Books = () => {
                             ? "loading"
                             : books && books.length
                             ? books &&
-                              books.map((el, i) => <Item el={el} key={i} />)
-                            : " no books"}
+                              books.map((el, i) => (
+                                <Item el={el} key={i} i={i} />
+                              ))
+                            : null}
+                          {load
+                            ? "loading"
+                            : users && users.length
+                            ? authorBooks &&
+                              authorBooks.length &&
+                              authorBooks.map((el, i) => (
+                                <Item el={el} key={i} i={i} />
+                              ))
+                            : null}
                         </tbody>
                       </table>
                     </div>

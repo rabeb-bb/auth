@@ -28,7 +28,7 @@ const style = {
 };
 
 const Review = ({ review }) => {
-  const [editedReview, setEditedReview] = useState(review);
+  const [editedReview, setEditedReview] = useState({ ...review });
   const [edit, setEdit] = useState(false);
   const [flag, setFlag] = useState(false);
   const [show, setShow] = useState(false);
@@ -54,24 +54,21 @@ const Review = ({ review }) => {
   //   setShow(false);
   // };
   const handleDelete = () => {
-    dispatch(deleteReview(review));
+    dispatch(deleteReview(editedReview));
   };
   const handleReport = () => {
     setShow(true);
     setFlag(true);
   };
-  const handleChangeTicket=(e)=>{
+  const handleChangeTicket = (e) => {
     setTicket({
       ...ticket,
       [e.target.name]: e.target.value,
       reportedReview: review._id,
-      reportedUserId: review.user_id._id,
+      // reportedUserId: review.user_id._id,
     });
-     
-  }
+  };
   const handleTicket = () => {
-   
-  
     dispatch(postTicket(ticket));
     setShow(false);
     setFlag(false);
@@ -110,23 +107,23 @@ const Review = ({ review }) => {
   };
   return (
     <div className="d-flex justify-content-start row review">
-      <div className="col-md-9">
+      <div className="col-md-12">
         <div className="d-flex flex-column  comment-section">
           <div className="bg-white p-2">
             <div className="d-flex flex-row user-info">
               <img
                 className="rounded-circle"
-                src=
-                  // review.user_id.profile_picture
-                  //   ? review.user_id.profile_picture:
-                  "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
-                
+                src={
+                  review && review.user_id && review.user_id.profile_picture
+                    ? review.user_id.profile_picture
+                    : "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+                }
                 width="40"
               />
               <div className="d-flex flex-column justify-content-start ml-2">
-                {/* <span className="d-block font-weight-bold name">
-                  {review.user_id.first_name}
-                </span> */}
+                <span className="d-block font-weight-bold name">
+                  {review && review.user_id && review.user_id.first_name}
+                </span>
                 <span className="date text-black-50">
                   {time_ago(review.date_of_release)}
                 </span>
@@ -144,7 +141,7 @@ const Review = ({ review }) => {
                   </li>
                 ))}
               </ul>
-              <Rating name="read-only" value={review.rating} readOnly/>
+              <Rating name="read-only" value={review.rating} readOnly />
 
               <p className="comment-text">{review.description}</p>
             </div>
@@ -159,18 +156,22 @@ const Review = ({ review }) => {
                 <i className="fa fa-flag"></i>
                 <span className="ml-1">Report</span>
               </div>
-              {review.user_id._id === localStorage.getItem("userID") ? (
+              {review &&
+              review.user_id &&
+              review.user_id._id === localStorage.getItem("userID") ? (
                 <div className="like p-2 cursor" onClick={() => handleEdit()}>
                   <i className="fa fa-edit"></i>
                   <span className="ml-1">Edit</span>
                 </div>
               ) : null}
-              {review && review.user && review.user_id._id === localStorage.getItem("userID") && (
+              {review &&
+              review.user_id &&
+              review.user_id._id === localStorage.getItem("userID") ? (
                 <div className="like p-2 cursor" onClick={() => handleDelete()}>
                   <i className="fa fa-trash"></i>
                   <span className="ml-1">Delete</span>
                 </div>
-              ) }
+              ) : null}
             </div>
           </div>
         </div>

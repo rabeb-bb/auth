@@ -14,12 +14,11 @@ const bookSchema = new Schema({
     type: Number,
     required: true,
   },
-  // price_currency: {
-  //   type: String,
-  //   enum: ["USD", "EURO", "TND"],
-  //   required: true,
-  //   default: "USD",
-  // },
+  price_currency: {
+    type: String,
+    enum: ["USD", "EURO", "TND"],
+    default: "USD",
+  },
   tags: { type: Array, required: true },
 
   description: {

@@ -211,7 +211,7 @@ const Footer = () => {
                   <option value="report_bug">report a bug</option>
                   <option value="other">other</option>
                 </select>
-                {other ? (
+                {other && (
                   <input
                     name="topic"
                     type="text"
@@ -219,7 +219,7 @@ const Footer = () => {
                     placeholder="Specify Subject"
                     onChange={(e) => handleChange(e)}
                   />
-                ) : null}
+                )}
               </div>
 
               <div className="form-group">
@@ -230,6 +230,7 @@ const Footer = () => {
                   className="form-control"
                   placeholder="Message"
                   onChange={(e) => handleChange(e)}
+                  value={ticket.content}
                 />
               </div>
               <div className="form-group">

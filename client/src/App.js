@@ -16,7 +16,7 @@ import { useEffect } from "react";
 import Account from "./Pages/MyAccount/Account";
 import Admin from "./Pages/admin/Admin";
 import Users from "./Components/Users";
-import Sidebar from "./Components/Sidebar";
+import Sidebar from "./Components/Sidebar/Sidebar";
 import User from "./Pages/User/User";
 import NotAuth from "./Pages/NotAuth";
 import Support from "./Pages/Support";
@@ -24,6 +24,7 @@ import Footer from "./Components/footer/Footer";
 import Book from "./Pages/Book";
 import BookForm from "./Pages/UploadBook/BookForm";
 import Author from "./Pages/Author/Author";
+import Blocked from "./Pages/Blocked";
 
 function App() {
   const user = useSelector((state) => state.userReducer.user);
@@ -38,27 +39,38 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      <div style={{ display: "flex" }}>
-        {user.role !== "admin" ? null : <Sidebar />}
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/Register" component={Register} />
-          <Route path="/Login" component={Login} />
-          <Route path="/Browse-books" component={Books} />
-          <Route path="/Book/:_id" component={Book} />
-          <Route path="/author" component={Author} />
-          <PrivateRoute path="/profile" component={Profile} />
-          <PrivateRoute path="/account" component={Account} />
-          <PrivateRoute path="/upload" component={BookForm} />
-          <AdminRoute exact path="/admin" component={Admin} />
+      {/* <Sidebar /> */}
+      <div
+        classname="container"
+        style={{ display: "flex", flexDirection: "row" }}
+      >
+        {user.role === "admin" && (
+          <div className="col-2">
+            <Sidebar />
+          </div>
+        )}
+        <div className="col-10">
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/Register" component={Register} />
+            <Route path="/Login" component={Login} />
+            <Route path="/Browse-books" component={Books} />
+            <Route path="/book/:_id" component={Book} />
+            <Route path="/author" component={Author} />
+            <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/account" component={Account} />
+            <PrivateRoute path="/upload" component={BookForm} />
+            <AdminRoute exact path="/admin" component={Admin} />
 
-          <AdminRoute path="/admin/users" component={UserList} />
-          <AdminRoute path="/admin/tickets" component={Support} />
-          <AdminRoute path="/admin/user/:_id" component={User} />
-          <Route path="/auth" component={NotAuth} />
+            <AdminRoute path="/admin/users" component={UserList} />
+            <AdminRoute path="/admin/tickets" component={Support} />
+            <AdminRoute path="/admin/user/:_id" component={User} />
+            <Route path="/auth" component={NotAuth} />
+            <Route path="/blocked" component={Blocked} />
 
-          <Route path="/*" component={Error} />
-        </Switch>
+            <Route path="/*" component={Error} />
+          </Switch>
+        </div>
       </div>
     </div>
   );

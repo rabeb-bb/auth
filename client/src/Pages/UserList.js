@@ -32,16 +32,11 @@ export default function UsersList() {
     role: "",
     status: "",
   });
+  //editing
+  const [block, setBlock] = React.useState(false);
   const handleOpen = (el) => {
-    if (el.status === "blocked") {
-      setBlock(false);
-    } else {
-      setBlock(true);
-    }
-    console.log(el);
     setOpen(true);
     setUser(el);
-    console.log(user);
   };
   const handleClose = () => setOpen(false);
 
@@ -49,27 +44,25 @@ export default function UsersList() {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getAllUsers());
-  }, [dispatch]);
-
-  //editing
-  const [block, setBlock] = React.useState(false);
+    if (user.status === "blocked") {
+      setBlock(false);
+    } else {
+      setBlock(true);
+    }
+  }, [dispatch, user]);
 
   const handleRole = (e) => {
-    setUser({ ...user, role: e.target.value });
-    console.log(user);
-    dispatch(editUser(user));
+    // console.log(user);
+    dispatch(editUser({ ...user, role: e.target.value }));
   };
   const handleStatus = () => {
     let confirm = window.confirm("are you sure you want to block this user?");
     if (confirm) {
       if (block) {
-        setUser({ ...user, status: "blocked" });
-        console.log(user);
-        console.log(`this the value of block: ${block}`);
-        dispatch(editUser(user));
+        // console.log(`this the value of block: ${block}`);
+        dispatch(editUser({ ...user, status: "blocked" }));
       } else {
-        setUser({ ...user, status: "active" });
-        dispatch(editUser(user));
+        dispatch(editUser({ ...user, status: "active" }));
       }
     }
   };
@@ -78,7 +71,7 @@ export default function UsersList() {
     <div style={{ height: 400, width: "100%" }}>
       <div className="table-responsive">
         <table className="table table-hover">
-          <thead>
+          <thead style={{ backgroundColor: "#c6c8c9", width: "30px" }}>
             <td>N</td>
             <td>ID</td>
             <td>Email</td>
@@ -133,7 +126,7 @@ export default function UsersList() {
                                         <table className="table table-borderless">
                                           <tbody>
                                             <tr>
-                                              <td className="col-md-2">
+                                              <td className="col-md-4">
                                                 <div className="profile">
                                                   {" "}
                                                   <img
@@ -148,7 +141,7 @@ export default function UsersList() {
                                                   />
                                                 </div>
                                               </td>
-                                              <td className="col-md-2">
+                                              <td className="col-md-4">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
@@ -159,7 +152,7 @@ export default function UsersList() {
                                                   </span>{" "}
                                                 </div>
                                               </td>
-                                              <td className="col-md-2">
+                                              <td className="col-md-4">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
@@ -172,7 +165,7 @@ export default function UsersList() {
                                               </td>
                                             </tr>
                                             <tr>
-                                              <td className="col-md-2">
+                                              <td className="col-md-4">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
@@ -184,7 +177,7 @@ export default function UsersList() {
                                                   </span>{" "}
                                                 </div>
                                               </td>
-                                              <td className="col-md-2">
+                                              <td className="col-md-4">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
@@ -198,14 +191,15 @@ export default function UsersList() {
                                               </td>
                                             </tr>
                                             <tr>
-                                              <td className="col-md-2">
+                                              <td className="col-md-4">
                                                 <div className="d-flex flex-column">
                                                   {" "}
                                                   <span className="heading d-block">
                                                     Change User Role:
                                                   </span>{" "}
                                                   <select
-                                                    className="form-control"
+                                                    className="form-control "
+                                                    // style={{ width: "100%" }}
                                                     onChange={(e) =>
                                                       handleRole(e)
                                                     }
@@ -229,7 +223,7 @@ export default function UsersList() {
                                                   className="btn btn-primary"
                                                   onClick={() => handleStatus()}
                                                 >
-                                                  {block ? "Unblock" : "Block"}
+                                                  {block ? "block" : "unblock"}
                                                 </button>
                                               </td>
                                             </tr>

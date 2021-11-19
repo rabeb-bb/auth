@@ -34,26 +34,24 @@ export const getReview = (_id) => async (dispatch) => {
   }
 };
 // get review for author only
-export const deleteReview =
-  ({ review }) =>
-  async (dispatch) => {
-    const config = {
-      headers: {
-        authorization: localStorage.getItem("token"),
-      },
-    };
-    try {
-      let result = await axios.delete(
-        `/api/review/author/delete/${review._id}`,
-        config
-      );
-      console.log(result);
-      dispatch({ type: DELETE_REVIEW, payload: result.data });
-      dispatch(getAllReviews());
-    } catch (error) {
-      dispatch({ type: FAIL_REVIEW, payload: error.response.data });
-    }
+export const deleteReview = (review) => async (dispatch) => {
+  const config = {
+    headers: {
+      authorization: localStorage.getItem("token"),
+    },
   };
+  try {
+    let result = await axios.delete(
+      `/api/review/user/delete/${review._id}`,
+      config
+    );
+    console.log(result);
+    dispatch({ type: DELETE_REVIEW, payload: result.data });
+    dispatch(getAllReviews(review.book_id._id));
+  } catch (error) {
+    dispatch({ type: FAIL_REVIEW, payload: error.response.data });
+  }
+};
 //Edit review
 export const editReview = (review) => async (dispatch) => {
   const config = {
@@ -69,6 +67,7 @@ export const editReview = (review) => async (dispatch) => {
     );
 
     dispatch({ type: EDIT_REVIEW, payload: result.data });
+    dispatch(getAllReviews(review.book_id._id));
   } catch (error) {
     console.log(error);
     // dispatch({ type: FAIL_REVIEW, payload: error.response.data });

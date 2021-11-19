@@ -10,7 +10,7 @@ import {
 } from "../constants/ticket-types";
 
 // get all Tickets
-export const getAllTickets = (book_id) => async (dispatch) => {
+export const getAllTickets = () => async (dispatch) => {
   dispatch({ type: LOAD_TICKET });
   try {
     let result = await axios.get(`/api/support/all`);

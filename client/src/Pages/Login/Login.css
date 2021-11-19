@@ -2,22 +2,23 @@
   /* box model */
   margin: 2% 20%;
   padding: 3%;
-  width: 60%;
+  /* width: 60%; */
   /* flexbox */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  text-align: center;
 }
 .login-form input {
-  width: 60%;
+  /* width: 60%; */
   margin: 1%;
   padding: 1%;
   font-size: 1.5em;
   border-radius: 5px;
 }
 .submit-btn {
-  width: 10%;
+  width: 60%;
   border: none;
   background-color: #2b6777;
   color: #f2f2f2;

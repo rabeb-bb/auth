@@ -99,11 +99,11 @@ const Author = () => {
               <div className="py-4 px-4">
                 <div className="d-flex align-items-center justify-content-between mb-3">
                   <h5 className="mb-0">Books</h5>
-                  <Link to="/upload">
+                  {/* <Link to="/upload">
                     <button className="btn btn-outline-dark btn-sm btn-block">
                       Upload Book
                     </button>
-                  </Link>
+                  </Link> */}
                   {/* <a href="#" className="btn btn-link text-muted">
                   Show all
                 </a> */}

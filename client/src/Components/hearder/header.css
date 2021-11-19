@@ -3,12 +3,14 @@
   /* background-image: url("https://www.sjpl.org/sites/default/files/images-legacy/book_with_yellow_background_smaller.jpg");
   background-repeat: no-repeat;*/
   /* background-size: 300%; */
-  background: url("https://www.leadershipbuffalo.org/content/images//blog/Education_hero-image-template_tablet-768x450px.gif")
+  background: url("https://www.coollibri.com/blog/wp-content/uploads/2019/11/reussir-la-premiere-de-couverture-d-un-livre-1.jpg")
     no-repeat;
   -webkit-background-size: cover;
-  -moz-background-size: 40%;
+  -moz-background-size: cover;
   -o-background-size: cover;
   /* background-size: 93.64%; */
+  color: rgb(3, 44, 17);
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 #home_into .intro {
   margin: 6%;
@@ -18,6 +20,7 @@
 #home_into .intro p {
   margin: 2%;
   font-size: 1.5vw;
+  font-style: italic;
 }
 #home_into .intro h2 {
   font-size: 3vw;

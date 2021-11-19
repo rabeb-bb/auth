@@ -186,7 +186,6 @@ export default function Navbar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
       </MenuItem>
     </Menu>
   );
@@ -216,7 +215,7 @@ export default function Navbar() {
                 <Link to="/">EverythingBooks</Link>
               </Typography>
             </div>
-            <Search sx={{ display: { xs: "none", sm: "block" }, margin: "1%" }}>
+            {/* <Search sx={{ display: { xs: "none", sm: "block" }, margin: "1%" }}>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -224,12 +223,15 @@ export default function Navbar() {
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
               />
-            </Search>
+            </Search> */}
             <Typography
               // variant="h6"
               noWrap
               component="div"
-              sx={{ display: { xs: "none", sm: "block" }, margin: "0 1%" }}
+              sx={{
+                display: { xs: "none", sm: "block" },
+                margin: "0 2% 0 50%",
+              }}
             >
               <Link to="/Browse-books">Browse Books </Link>
             </Typography>

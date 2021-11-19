@@ -8,6 +8,7 @@ import {
   addBook,
   removeBook,
 } from "../../JS/actions/books";
+import { add2MyShelf } from "../../JS/actions/users";
 import BookEdit from "../../Components/BookEdit";
 import Rating from "@mui/material/Rating";
 import "./BookInfo.css";
@@ -16,25 +17,33 @@ import { time_ago } from "../../utilities/time";
 // import { getAuthor } from "../../JS/actions/users";
 // import { useParams } from "react-router";
 
-const BookInfo = () => {
+const BookInfo = ({ history }) => {
   const user = useSelector((state) => state.userReducer.user);
   const book = useSelector((state) => state.bookReducer.book);
   const reviews = useSelector((state) => state.reviewReducer.reviews);
 
   const load = useSelector((state) => state.userReducer.load);
   const { _id } = useParams();
-  const history = useHistory();
+
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [shelved, setShelved] = useState(false);
   const [book2Shelve, setBook2Shelve] = useState({ ...book });
   const [book2Edit, setBook2Edit] = useState({ ...book });
+  const [user2Edit, setUser2Edit] = useState({ ...user });
   console.log(_id);
 
   useEffect(() => {
     dispatch(getBook(_id));
     dispatch(getAllReviews(_id));
-  }, [dispatch]);
+    if (
+      user &&
+      user.books &&
+      user.books.filter((el) => el._id === _id).length
+    ) {
+      setShelved(true);
+    }
+  }, [dispatch, user]);
 
   // console.log(book);
   const handleEdit = () => {
@@ -59,27 +68,22 @@ const BookInfo = () => {
   };
   console.log(`this is the loaded book ${book}`);
   const handleShelf = async () => {
-    await setBook2Shelve({
-      ...book,
-      reader_id: [...book.reader_id, user._id],
-    });
-    console.log(`book ${book}`);
-    console.log(`book2Shelve ${book2Shelve}`);
-    console.log(`shelved ${shelved}`);
     if (shelved) {
-      dispatch(removeBook(book2Shelve));
+      dispatch(
+        add2MyShelf({ books: user.books.filter((el) => (el._id = book._id)) })
+      );
     } else {
-      dispatch(addBook(book2Shelve));
+      dispatch(add2MyShelf({ books: [...user.books, book._id] }));
     }
 
     setShelved(!shelved);
   };
   return (
-    <div className="book">
+    <div className="book ">
       {load ? (
         "please wait while page loads..."
       ) : (
-        <div className="row p-2 bg-white border rounded">
+        <div className="row p-2 bg-white border rounded book">
           <div className="col-md-2 mt-1">
             <img
               className="img-fluid img-responsive rounded product-image"
@@ -90,9 +94,27 @@ const BookInfo = () => {
             />
           </div>
           <div className="col-md-6 mt-1">
-            <h5>{book && book.title}</h5>
-            <div className="d-flex flex-row">
-              <div className="ratings mr-2">
+            <h5 style={{ fontSize: "1.5vw" }}>{book && book.title}</h5>
+            <div className="mt-1 mb-1 spec-1">
+              <span>
+                Author:
+                <Link to="/author">
+                  {" "}
+                  {book && book.author_id.first_name}{" "}
+                  {book && book.author_id.last_name}
+                </Link>
+                <br />
+              </span>
+            </div>
+            <div className="d-flex flex-row" style={{ alignItems: "center" }}>
+              <div
+                className="ratings mr-2 spec-1 "
+                style={{
+                  fontSize: "0.8vw",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <Rating
                   // value={book && (book.count ? book.score / book.count : "0")}
                   value={
@@ -107,28 +129,26 @@ const BookInfo = () => {
                   readOnly
                   precision={0.1}
                 />{" "}
-                {reviews &&
-                  reviews.length &&
-                  (
-                    reviews.map((el) => el.rating).reduce((acc, v) => acc + v) /
-                    reviews.length
-                  ).toFixed(2)}
-                <br />
+                <span>
+                  {" "}
+                  {reviews &&
+                    reviews.length &&
+                    (
+                      reviews
+                        .map((el) => el.rating)
+                        .reduce((acc, v) => acc + v) / reviews.length
+                    ).toFixed(2)}
+                </span>
+                {" - "}
                 {/* {reviews.map((el) => console.log(el.rating))} */}
-                {reviews && reviews.length}Reviews
+                <span>{reviews && reviews.length} Reviews</span>
               </div>
               {/* <span> {book.count} reviews</span> */}
             </div>
             <div className="mt-1 mb-1 spec-1">
-              <span>
-                <Link to="/author">
-                  {" "}
-                  {book && book.author_id.first_name}{" "}
-                  {book && book.author_id.last_name}
-                </Link>
-                <br />
-              </span>
               <span>{book && time_ago(book.date_of_release)}</span>
+              <br />
+              <span>ISBN: {book && book.isbn}</span>
               <span>
                 {/* {book &&
                   book.date_of_release.getMonth() +
@@ -144,17 +164,26 @@ const BookInfo = () => {
             </div>
             <div className="mt-1 mb-1 spec-1">
               <ul className="list-inline list-inline-dotted mb-3 mb-lg-2">
+                <span style={{ fontSize: "0.8vw" }}>Genre: </span>
                 {book &&
                   book.tags.map((el) => (
-                    <li className="list-inline-item">
+                    <span
+                      className="list-inline-item"
+                      style={{
+                        fontSize: "0.8vw",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
                       <a href="#" className="text-muted" data-abc="true">
                         {" "}
                         {el}
                       </a>
-                    </li>
+                    </span>
                   ))}
               </ul>
             </div>
+            <span style={{ fontSize: "0.9vw" }}>Book Preview:</span>
             <p className="text-justify para mb-0">
               {book && book.description}
               <br />
@@ -180,12 +209,17 @@ const BookInfo = () => {
                 </button>
               </div>
             ) : (
-              <div>
-                <button onClick={handleEdit} className="btn btn-primary btn-sm">
+              <div className="d-flex flex-column mt-4">
+                <button
+                  type="button"
+                  onClick={handleEdit}
+                  className="btn btn-primary btn-sm"
+                >
                   Edit
                 </button>
                 <button
                   onClick={handleDelete}
+                  type="button"
                   className="btn btn-outline-primary btn-sm mt-2"
                 >
                   Delete

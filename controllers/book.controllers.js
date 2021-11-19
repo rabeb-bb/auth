@@ -163,17 +163,34 @@ exports.searchBooks = async (req, res) => {
     //   console.log(tagged);
     //   filteredBooks = [...filteredBooks, ...tagged];
     // }
+    let getAllBooks;
+    if (isbn) {
+      getAllBooks = await Book.findOne({
+        isbn: isbn,
+      }).populate(["author_id", "reader_id"]);
+    } else {
+      getAllBooks = await Book.find({
+        // { [author_id.last_name]: `/${author}/i ` },
+        $and: [
+          { title: { $regex: regex } },
+          // { isbn: isbn },
+          { tags: { $in: [genre] } },
+        ],
+      })
+        .populate(["author_id", "reader_id"])
+        .exec();
+    }
+    // const getAllBooks = await Book.find({
+    //   // { [author_id.last_name]: `/${author}/i ` },
+    //   $and: [
+    //     { title: { $regex: regex } },
+    //     // { isbn: isbn },
+    //     { tags: { $in: [genre] } },
+    //   ],
+    // })
+    //   .populate(["author_id", "reader_id"])
+    //   .exec();
 
-    const getAllBooks = await Book.find({
-      // { [author_id.last_name]: `/${author}/i ` },
-      $and: [
-        { title: { $regex: regex } },
-        // { isbn: isbn },
-        { tags: { $in: [genre] } },
-      ],
-    })
-      .populate(["author_id", "reader_id"])
-      .exec();
     // console.log(filteredBooks);
     res.status(200).send({ msg: "found filtered books", books: getAllBooks });
   } catch (error) {

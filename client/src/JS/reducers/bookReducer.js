@@ -39,7 +39,7 @@ const bookReducer = (state = initialState, { type, payload }) => {
     case GET_BOOK:
       return { ...state, book: payload.book, isAuth: true, load: false };
     case MY_BOOKS:
-      return { ...state, myBooks: payload.results, isAuth: true, load: false };
+      return { ...state, myBooks: payload.books, isAuth: true, load: false };
     case DELETE_BOOK:
       return {
         ...state,

@@ -99,6 +99,30 @@ exports.EditInfo = async (req, res) => {
       .send({ errors: [{ msg: "could not update account info" }] });
   }
 };
+exports.add2Shelf = async (req, res) => {
+  console.log(req.user);
+  try {
+    // let { password } = req.body;
+    let user = await User.findById(req.user._id);
+
+    const updatedUser = await User.updateOne(
+      { _id: req.user._id },
+      {
+        $set: {
+          ...req.body,
+        },
+      }
+    );
+    res
+      .status(200)
+      .send({ msg: "added to shelf successfully", user: updatedUser });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(400)
+      .send({ errors: [{ msg: "could not update account info" }] });
+  }
+};
 //log into an already existing user account
 exports.Login = async (req, res) => {
   try {
@@ -152,6 +176,21 @@ exports.getUser = async (req, res) => {
     res.status(400).send({ errors: [{ msg: "could not find user" }] });
   }
 };
+exports.getCurrent = async (req, res) => {
+  try {
+    const getUser = await User.findById(req.user._id)
+      .populate({
+        path: "books",
+        populate: { path: "author_id" },
+      })
+      .exec();
+    res
+      .status(200)
+      .send({ msg: "user found and populated and auth", user: getUser });
+  } catch {
+    res.status(400).send({ errors: [{ msg: "not authorized" }] });
+  }
+};
 //get user by id
 exports.deleteUser = async (req, res) => {
   console.log(req.params);
@@ -188,7 +227,6 @@ exports.getAuthor = async (req, res) => {
     //check if email exists in the db or not
     const findUser = await User.findById(req.params.author_id)
       .populate("books")
-      .populate("reviews")
       .exec();
     // .populate("posts");
 
@@ -203,25 +241,49 @@ exports.getAuthor = async (req, res) => {
   }
 };
 exports.searchAuthors = async (req, res) => {
-  const { name } = req.body;
-  const regex = new RegExp(name, "i");
-  // const regex2 = new RegExp(isbn, "i");
   try {
-    const getAllAuthors = await User.find({
-      $or: [
-        // { [author_id.last_name]: `/${author}/i ` },
-        { first_name: { $regex: regex } },
-        { last_name: { $regex: regex } },
-      ],
-      role: "author",
-    }).populate("books");
-    res
-      .status(200)
-      .send({ msg: "found filtered authors", users: getAllAuthors });
+    const { author } = req.body;
+    //check if email exists in the db or not
+    const findUser = await User.find({
+      $or: [{ first_name: `/${author}/i` }, { last_name: `/${author}/i` }],
+    })
+      .populate({
+        path: "books",
+        populate: { path: "author_id" },
+      })
+      .exec();
+    // .populate("posts");
+
+    // if (!findBook) {
+    //   return res.status(404).send({ errors: [{ msg: "book does not exist" }] });
+    // }
+    // console.log(findUser);
+    res.status(200).send({ msg: "authors are found", users: findUser });
   } catch (error) {
-    console.log(`filtered${error}`);
-    res
-      .status(400)
-      .send({ errors: [{ msg: "could not find filtered authors" }] });
+    console.log(error);
+    res.status(400).send({ errors: [{ msg: "could not find authors" }] });
   }
 };
+// exports.searchAuthors = async (req, res) => {
+//   const { name } = req.body;
+//   const regex = new RegExp(name, "i");
+//   // const regex2 = new RegExp(isbn, "i");
+//   try {
+//     const getAllAuthors = await User.find({
+//       $or: [
+//         // { [author_id.last_name]: `/${author}/i ` },
+//         { first_name: { $regex: regex } },
+//         { last_name: { $regex: regex } },
+//       ],
+//       role: "author",
+//     }).populate("books");
+//     res
+//       .status(200)
+//       .send({ msg: "found filtered authors", users: getAllAuthors });
+//   } catch (error) {
+//     console.log(`filtered${error}`);
+//     res
+//       .status(400)
+//       .send({ errors: [{ msg: "could not find filtered authors" }] });
+//   }
+// };

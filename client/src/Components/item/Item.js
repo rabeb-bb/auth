@@ -4,16 +4,18 @@ import Rating from "@mui/material/Rating";
 import { getAuthor } from "../../JS/actions/users";
 import { Link } from "react-router-dom";
 import { getBook } from "../../JS/actions/books";
+import { getAllReviews } from "../../JS/actions/reviews";
 
-const Item = ({ el, key }) => {
+const Item = ({ el, i }) => {
   const author = useSelector((state) => state.userReducer.author);
+  const reviews = useSelector((state) => state.reviewReducer.reviews);
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getAuthor(el.author_id));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getAllReviews(el._id));
+  }, [dispatch]);
   return (
     <tr>
-      <td className="number text-center">{key + 1}</td>
+      <td className="number text-center">{i + 1}</td>
       <td className="image">
         <img src={el.cover} alt="book cover" />
       </td>
@@ -36,8 +38,16 @@ const Item = ({ el, key }) => {
         <span>
           <Rating
             name="read-only"
-            value={el.count ? el.score / el.count : "0"}
+            value={
+              reviews &&
+              reviews.length &&
+              (
+                reviews.map((el) => el.rating).reduce((acc, v) => acc + v) /
+                reviews.length
+              ).toFixed(2)
+            }
             readOnly
+            precision={0.1}
           />
         </span>
       </td>

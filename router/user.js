@@ -5,6 +5,8 @@ const {
   getAuthor,
   EditInfo,
   searchAuthors,
+  add2Shelf,
+  getCurrent,
 } = require("../controllers/user.controllers");
 const {
   registerValidate,
@@ -28,11 +30,14 @@ router.post("/register", registerValidate(), validation, Register);
 router.post("/login", loginValidate(), validation, Login);
 
 //get current user
-router.get("/current", isAuth, (req, res) => {
-  res.send({ msg: `authorized`, user: req.user });
-});
+// router.get("/current", isAuth, (req, res) => {
+
+//   res.send({ msg: `authorized`, user: req.user });
+// });
+router.get("/current", isAuth, getCurrent);
 //edit profile
 router.put("/edit/:_id", upload.single("profile_picture"), isAuth, EditInfo);
+router.put("/addBook/:_id", isAuth, add2Shelf);
 //get author
 router.get("/author/:author_id", getAuthor);
 router.post("/authors/search", searchAuthors);

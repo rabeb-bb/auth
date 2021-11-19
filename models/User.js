@@ -37,8 +37,9 @@ const userSchema = new Schema({
   posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   memberSince: {
     type: Date,
-    default: Date.now,
+    // default: Date.now,
   },
+  strikes: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -27,18 +27,20 @@ export default function Support() {
     id: "",
     type: "",
     content: "",
-    date: "",
+    // date: "",
     // user_id: {},
     // reportedReview: {},
     reportedUserId: "",
     status: "",
   });
+  // useEffect(() => {
+  //   if (ticket.status === "open") {
+  //     setClose(false);
+  //   } else {
+  //     setClose(true);
+  //   }
+  // }, [ticket])
   const handleOpen = (el) => {
-    if (el.status === "open") {
-      setClose(false);
-    } else {
-      setClose(true);
-    }
     setOpen(true);
     setTicket(el);
   };
@@ -48,7 +50,10 @@ export default function Support() {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getAllTickets());
-  }, [dispatch]);
+    if (ticket.status === "open") {
+      setClose(true);
+    }
+  }, [dispatch, ticket]);
 
   //editing
   const [close, setClose] = React.useState(false);
@@ -57,11 +62,9 @@ export default function Support() {
     let confirm = window.confirm("are you sure you want to block this user?");
     if (confirm) {
       if (ticket.status === "open") {
-        setTicket({ ...ticket, status: "closed" });
-        dispatch(editTicket(ticket));
+        dispatch(editTicket({ ...ticket, status: "closed" }));
       } else {
-        setTicket({ ...ticket, status: "open" });
-        dispatch(editTicket(ticket));
+        dispatch(editTicket({ ...ticket, status: "open" }));
       }
     }
     setClose(!close);
@@ -71,17 +74,18 @@ export default function Support() {
     <div style={{ height: 400, width: "100%" }}>
       <div className="table-responsive">
         <table className="table table-hover">
-          <thead>
+          <thead style={{ backgroundColor: "#c6c8c9", width: "30px" }}>
             <td>N</td>
             <td>ID</td>
             <td>Email</td>
             <td>Type</td>
             <td>Status</td>
-            <td>Date</td>
+            {/* <td>Date</td> */}
             <td>check</td>
           </thead>
           <tbody>
             {tickets &&
+              tickets.length &&
               tickets.map((el, i) => (
                 <tr key={i}>
                   <td className="number text-center">{i}</td>
@@ -91,7 +95,7 @@ export default function Support() {
                   </td>
                   <td className="text-right">{el.type}</td>
                   <td className="text-right">{el.status}</td>
-                  <td className="text-right">{el.date}</td>
+                  {/* <td className="text-right">{el.date}</td> */}
 
                   <td className="text-right">
                     <IconButton
@@ -132,6 +136,8 @@ export default function Support() {
                                                   {" "}
                                                   <img
                                                     src={
+                                                      ticket &&
+                                                      ticket.user_id &&
                                                       ticket.user_id
                                                         .profile_picture
                                                         ? ticket._id
@@ -151,7 +157,15 @@ export default function Support() {
                                                     Name
                                                   </span>{" "}
                                                   <span className="subheadings">
-                                                    {`${ticket.user_id.first_name} ${ticket.user_id.last_name}`}
+                                                    {`${
+                                                      ticket &&
+                                                      ticket.user_id &&
+                                                      ticket.user_id.first_name
+                                                    } ${
+                                                      ticket &&
+                                                      ticket.user_id &&
+                                                      ticket.user_id.last_name
+                                                    }`}
                                                   </span>{" "}
                                                 </div>
                                               </td>
@@ -162,7 +176,9 @@ export default function Support() {
                                                     Email
                                                   </span>{" "}
                                                   <span className="subheadings">
-                                                    {ticket.user_id.email}
+                                                    {ticket &&
+                                                      ticket.user_id &&
+                                                      ticket.user_id.email}
                                                   </span>{" "}
                                                 </div>
                                               </td>
@@ -174,7 +190,7 @@ export default function Support() {
                                                   </span>{" "}
                                                   <span className="subheadings">
                                                     {/* <i className="dots" />{" "} */}
-                                                    {ticket.type}
+                                                    {ticket && ticket.type}
                                                   </span>{" "}
                                                 </div>
                                               </td>
@@ -261,8 +277,7 @@ export default function Support() {
                                                   className="btn btn-primary"
                                                   onClick={() => handleStatus()}
                                                 >
-                                                  {/* {close ? "open" : "close"} */}
-                                                  close
+                                                  {close ? "close" : "open"}
                                                 </button>
                                               </td>
                                             </tr>
